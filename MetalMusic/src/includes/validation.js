@@ -53,7 +53,11 @@ export default {
           : `The field ${ctx.field} is invalid.`
 
         return message
-      }
+      },
+      validateOnBlur: true, //validates on focus change
+      validateOnChange: true,
+      validateOnInput: false, //the most strict one: fires validation on every key change
+      validateOnModelUpdate: true
     })
   }
 }
