@@ -104,6 +104,7 @@
 
 <script>
 import { ErrorMessage } from 'vee-validate'
+import { auth } from '@/includes/firebase'
 
 export default {
   name: 'RegisterForm',
@@ -129,15 +130,25 @@ export default {
     }
   },
   methods: {
-    register(values) {
+    async register(values) {
       this.regShowAlert = true
       this.regInSubmission = true
       this.regAlertVariant = 'bg-blue-500'
       this.regAlertMessage = 'Please wait! Your account is being created.'
 
+      let userCred = null
+      try {
+        userCred = await auth.createUserWithEmailAndPassword(values.email, values.password)
+      } catch (error) {
+        this.regInSubmission = false
+        this.regAlertVariant = 'bg-red-500'
+        this.regAlertMessage = 'An unexpected error occured. Please try again later.'
+        return
+      }
+
       this.regAlertVariant = 'bg-green-500'
       this.regAlertMessage = 'Success! Your acoount has been created.'
-      console.log(values)
+      console.log(userCred)
     }
   }
 }
