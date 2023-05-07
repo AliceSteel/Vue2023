@@ -81,6 +81,19 @@
       </vee-field>
       <ErrorMessage class="text-red-600" name="country" />
     </div>
+    <!-- Artist or Listener -->
+    <div class="mb-3">
+      <label class="inline-block mb-2">Are you a Listener or an Artist?</label>
+      <vee-field
+        as="select"
+        name="role"
+        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+      >
+        <option value="listener">Listener</option>
+        <option value="artist">Artist</option>
+      </vee-field>
+      <ErrorMessage class="text-red-600" name="role" />
+    </div>
     <!-- TOS -->
     <div class="mb-3 pl-6">
       <vee-field
@@ -104,7 +117,9 @@
 
 <script>
 import { ErrorMessage } from 'vee-validate'
-import { auth } from '@/includes/firebase'
+import { auth, usersCollection } from '@/includes/firebase'
+import { mapWritableState } from 'pinia'
+import useUserStore from '@/stores/user'
 
 export default {
   name: 'RegisterForm',
@@ -118,16 +133,21 @@ export default {
         password: 'required|min:9|max:100|excluded:password',
         confirm_password: 'required|passwordsMismatch:@password', //@[name] should correspond to field [name] to confirm
         country: 'required|excluded:other',
+        role: 'required',
         tos: 'tos'
       },
       userData: {
-        country: 'Denmark'
+        country: 'Denmark',
+        role: 'listener'
       },
       regInSubmission: false,
       regShowAlert: false,
       regAlertVariant: 'bg-blue-500',
       regAlertMessage: 'Please wait! Your account is being created.'
     }
+  },
+  computed: {
+    ...mapWritableState(useUserStore, ['userLoggedIn'])
   },
   methods: {
     async register(values) {
@@ -136,6 +156,7 @@ export default {
       this.regAlertVariant = 'bg-blue-500'
       this.regAlertMessage = 'Please wait! Your account is being created.'
 
+      // to store user data in authentication database:
       let userCred = null
       try {
         userCred = await auth.createUserWithEmailAndPassword(values.email, values.password)
@@ -145,6 +166,22 @@ export default {
         this.regAlertMessage = 'An unexpected error occured. Please try again later.'
         return
       }
+      // to store user data in firestore database:
+      try {
+        await usersCollection.add({
+          name: values.name,
+          email: values.email,
+          age: values.age,
+          country: values.country,
+          role: values.role
+        })
+      } catch (error) {
+        this.regInSubmission = false
+        this.regAlertVariant = 'bg-red-500'
+        this.regAlertMessage = 'An unexpected error occured. Please try again later.'
+        return
+      }
+      this.userLoggedIn = true
 
       this.regAlertVariant = 'bg-green-500'
       this.regAlertMessage = 'Success! Your acoount has been created.'
