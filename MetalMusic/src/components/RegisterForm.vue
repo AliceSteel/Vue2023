@@ -117,8 +117,8 @@
 
 <script>
 import { ErrorMessage } from 'vee-validate'
-import { auth, usersCollection } from '@/includes/firebase'
-import { mapWritableState } from 'pinia'
+
+import { mapActions } from 'pinia'
 import useUserStore from '@/stores/user'
 
 export default {
@@ -146,46 +146,27 @@ export default {
       regAlertMessage: 'Please wait! Your account is being created.'
     }
   },
-  computed: {
-    ...mapWritableState(useUserStore, ['userLoggedIn'])
-  },
   methods: {
+    ...mapActions(useUserStore, {
+      createUser: 'register'
+    }),
     async register(values) {
       this.regShowAlert = true
       this.regInSubmission = true
       this.regAlertVariant = 'bg-blue-500'
       this.regAlertMessage = 'Please wait! Your account is being created.'
 
-      // to store user data in authentication database:
-      let userCred = null
       try {
-        userCred = await auth.createUserWithEmailAndPassword(values.email, values.password)
+        await this.createUser(values)
       } catch (error) {
         this.regInSubmission = false
         this.regAlertVariant = 'bg-red-500'
         this.regAlertMessage = 'An unexpected error occured. Please try again later.'
         return
       }
-      // to store user data in firestore database:
-      try {
-        await usersCollection.add({
-          name: values.name,
-          email: values.email,
-          age: values.age,
-          country: values.country,
-          role: values.role
-        })
-      } catch (error) {
-        this.regInSubmission = false
-        this.regAlertVariant = 'bg-red-500'
-        this.regAlertMessage = 'An unexpected error occured. Please try again later.'
-        return
-      }
-      this.userLoggedIn = true
 
       this.regAlertVariant = 'bg-green-500'
       this.regAlertMessage = 'Success! Your acoount has been created.'
-      console.log(userCred)
     }
   }
 }
