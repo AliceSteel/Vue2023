@@ -42,6 +42,8 @@
 
 <script>
 import { ErrorMessage } from 'vee-validate'
+import { mapActions } from 'pinia'
+import useUserStore from '@/stores/user'
 
 export default {
   name: 'LoginForm',
@@ -59,15 +61,25 @@ export default {
     }
   },
   methods: {
-    login(values) {
-      this.loginInSubmission = true
+    ...mapActions(useUserStore, ['authenticate']),
+    async login(values) {
       this.loginShowAlert = true
+      this.loginInSubmission = true
       this.loginAlertVariant = 'bg-blue-500'
       this.loginAlertMessage = 'Please wait! We are logging you in.'
-      console.log(values)
+
+      try {
+        await this.authenticate(values)
+      } catch (error) {
+        this.loginInSubmission = false
+        this.loginAlertVariant = 'bg-red-500'
+        this.loginAlertMessage = 'Invalid login details.'
+        return
+      }
 
       this.loginAlertVariant = 'bg-green-500'
       this.loginAlertMessage = 'Success!'
+      window.location.reload()
     }
   }
 }
