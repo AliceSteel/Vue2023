@@ -2,7 +2,10 @@
   <header id="header" class="bg-gray-700">
     <nav class="container mx-auto flex justify-start items-center py-5 px-4">
       <!-- App Name -->
-      <router-link to="/" class="text-white font-bold uppercase text-2xl mr-4"
+      <router-link
+        :to="{ name: 'home' }"
+        class="text-white font-bold uppercase text-2xl mr-4"
+        exact-active-class="no-active"
         >Metal Music Forum</router-link
       >
 
@@ -11,7 +14,7 @@
         <ul class="flex flex-row mt-1">
           <!-- Navigation Links -->
           <li>
-            <router-link to="/about" class="px-2 text-white">About</router-link>
+            <router-link :to="{ name: 'about' }" class="px-2 text-white">About</router-link>
           </li>
           <li v-if="!userStore.userLoggedIn">
             <a class="px-2 text-white" href="#" @click.prevent="toggleAuthModal"
@@ -20,10 +23,10 @@
           </li>
           <template v-else>
             <li>
-              <router-link to="/manage" class="px-2 text-white">Manage</router-link>
+              <router-link :to="{ name: 'manage' }" class="px-2 text-white">Manage</router-link>
             </li>
             <li>
-              <a class="px-2 text-white" href="#" @click.prevent="userStore.signOut">Logout</a>
+              <a class="px-2 text-white" href="#" @click.prevent="signOut">Logout</a>
             </li>
           </template>
         </ul>
@@ -45,6 +48,12 @@ export default {
   methods: {
     toggleAuthModal() {
       this.modalStore.isOpen = !this.modalStore.isOpen
+    },
+    signOut() {
+      this.userStore.signOut()
+      if (this.$route.meta.requiresAuth) {
+        this.$router.push({ name: 'home' })
+      }
     }
   }
 }

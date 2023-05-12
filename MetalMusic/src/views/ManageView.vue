@@ -136,4 +136,8 @@
   </section>
 </template>
 
-<script></script>
+<script>
+export default {
+  name: 'ManageView'
+}
+</script>
