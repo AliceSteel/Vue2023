@@ -21,24 +21,16 @@
       </div>
       <hr class="my-6" />
       <!-- Progess Bars -->
-      <div class="mb-4">
+      <div class="mb-4" v-for="upload in uploads" :key="upload.name">
         <!-- File Name -->
-        <div class="font-bold text-sm">Just another song.mp3</div>
+        <div class="font-bold text-sm">{{ upload.name }}</div>
         <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
           <!-- Inner Progress Bar -->
-          <div class="transition-all progress-bar bg-blue-400" style="width: 75%"></div>
-        </div>
-      </div>
-      <div class="mb-4">
-        <div class="font-bold text-sm">Just another song.mp3</div>
-        <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-          <div class="transition-all progress-bar bg-blue-400" style="width: 35%"></div>
-        </div>
-      </div>
-      <div class="mb-4">
-        <div class="font-bold text-sm">Just another song.mp3</div>
-        <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-          <div class="transition-all progress-bar bg-blue-400" style="width: 55%"></div>
+          <div
+            class="transition-all progress-bar bg-blue-400"
+            :class="'bg-blue-400'"
+            :style="{ width: upload.current_progress + '%' }"
+          ></div>
         </div>
       </div>
     </div>
@@ -46,11 +38,14 @@
 </template>
 
 <script>
+import { storage } from '@/includes/firebase'
+
 export default {
   name: 'AppUpload',
   data() {
     return {
-      isDragover: false
+      isDragover: false,
+      uploads: []
     }
   },
   methods: {
@@ -61,6 +56,22 @@ export default {
         if (file.type !== 'audio/mpeg') {
           return
         }
+        const storageRef = storage.ref() //metal-music-forum.appspot.com
+        const songsRef = storageRef.child(`songs/${file.name}`) //metal-music-forum.appspot.com/songs/example.mp3
+        const task = songsRef.put(file) //to initialize upload process
+
+        const uploadIndex =
+          this.uploads.push({
+            task,
+            current_progress: 0,
+            name: file.name
+          }) - 1
+
+        //to listen on events(objects) that firebase returns:
+        task.on('state_changed', (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploads[uploadIndex].current_progress = progress
+        })
       })
     }
   }
