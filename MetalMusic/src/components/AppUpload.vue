@@ -19,6 +19,7 @@
       >
         <h5>Drop your files here</h5>
       </div>
+      <input type="file" multiple @change="upload($event)" />
       <hr class="my-6" />
       <!-- Progess Bars -->
       <div class="mb-4" v-for="upload in uploads" :key="upload.name">
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-import { storage } from '@/includes/firebase'
+import { storage, auth, songsCollection } from '@/includes/firebase'
 
 export default {
   name: 'AppUpload',
@@ -55,7 +56,8 @@ export default {
   methods: {
     upload($event) {
       this.isDragover = false
-      const files = [...$event.dataTransfer.files] //spreading an object to an array as we need to loop over it
+      //spreading an object to an array as we need to loop over it(for dragAndDrop or input files upload ):
+      const files = $event.dataTransfer ? [...$event.dataTransfer.files] : [...$event.target.files]
 
       files.forEach((file) => {
         if (file.type !== 'audio/mpeg') {
@@ -88,12 +90,25 @@ export default {
             this.uploads[uploadIndex].variant = 'bg-red-400'
             this.uploads[uploadIndex].icon = 'fas fa-times'
             this.uploads[uploadIndex].text_class = 'text-red-400'
-            this.uploads[uploadIndex].error_message = 'Upload failed. File should not exceed 10Mb'
-
+            this.uploads[uploadIndex].error_message =
+              error.code === 'storage/unauthorized'
+                ? 'Upload failed. File should not exceed 10Mb'
+                : ''
             console.log(error)
           },
           //when upload is a success:
-          () => {
+          async () => {
+            const song = {
+              uid: auth.currentUser.uid,
+              display_name: auth.currentUser.displayName,
+              original_name: task.snapshot.ref.name,
+              modified_name: task.snapshot.ref.name,
+              genre: '',
+              comment_count: 0
+            }
+            song.url = await task.snapshot.ref.getDownloadURL()
+            await songsCollection.add(song)
+
             this.uploads[uploadIndex].variant = 'bg-green-400'
             this.uploads[uploadIndex].icon = 'fas fa-check'
             this.uploads[uploadIndex].text_class = 'text-green-400'
