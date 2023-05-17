@@ -103,12 +103,31 @@
 
 <script>
 import AppUpload from '../components/AppUpload.vue'
+import { songsCollection, auth } from '@/includes/firebase'
 
 export default {
   name: 'ManageView',
   components: {
     AppUpload
-  } /*,
+  },
+  data() {
+    return {
+      songs: []
+    }
+  },
+
+  async created() {
+    //to query firebase storage:
+    const snapshot = await songsCollection.where('uid', '==', auth.currentUser.uid).get()
+    snapshot.forEach((document) => {
+      const song = {
+        ...document.data(),
+        docID: document.id
+      }
+      this.songs.push(song)
+    })
+  }
+  /*,
   beforeRouteLeave(to, from, next) {
     this.$refs.upload.cancelUploads()
     next()
