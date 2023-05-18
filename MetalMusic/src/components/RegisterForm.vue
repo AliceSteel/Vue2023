@@ -116,14 +116,12 @@
 </template>
 
 <script>
-import { ErrorMessage } from 'vee-validate'
-
 import { mapActions } from 'pinia'
 import useUserStore from '@/stores/user'
 
 export default {
   name: 'RegisterForm',
-  components: { ErrorMessage },
+
   data() {
     return {
       schema: {

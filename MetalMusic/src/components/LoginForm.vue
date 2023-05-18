@@ -41,13 +41,11 @@
 </template>
 
 <script>
-import { ErrorMessage } from 'vee-validate'
 import { mapActions } from 'pinia'
 import useUserStore from '@/stores/user'
 
 export default {
   name: 'LoginForm',
-  components: { ErrorMessage },
   data() {
     return {
       loginSchema: {
