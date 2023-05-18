@@ -23,6 +23,11 @@ const routes = [
     }
   },
   {
+    name: 'song',
+    path: '/song/:id',
+    component: () => import(/* webpackChunkName: "Manage" */ '@/views/SongView.vue')
+  },
+  {
     path: '/:catchAll(.*)*',
     redirect: { name: 'home' }
   }
