@@ -122,6 +122,10 @@ export default {
       this.$router.push({ name: 'home' })
       return
     }
+    //checking if sort param exist in route query:
+    const { sort } = this.$route.query
+    this.sort = sort === '1' || sort === '2' ? sort : '1'
+
     this.song = docSnapshot.data()
     this.getComments()
   },
@@ -159,6 +163,19 @@ export default {
           docID: doc.id,
           ...doc.data()
         })
+      })
+    }
+  },
+  //to keep sorted selection when updating the page as query params
+  watch: {
+    sort(newVal) {
+      if (newVal === this.$route.query.sort) {
+        return
+      }
+      this.$router.push({
+        query: {
+          sort: newVal
+        }
       })
     }
   }
