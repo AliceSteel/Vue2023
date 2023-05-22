@@ -12,6 +12,10 @@ export default defineStore('player', {
   }),
   actions: {
     async newSong(song) {
+      if (this.sound instanceof Howl) {
+        this.sound.unload()
+      }
+
       this.current_song = song
 
       this.sound = new Howl({
@@ -39,6 +43,19 @@ export default defineStore('player', {
       if (this.sound.playing()) {
         requestAnimationFrame(this.progress)
       }
+    },
+    updateSeek(event) {
+      if (!this.sound.playing) {
+        return
+      }
+      //to calculate the position we need audio to move:
+      const { x, width } = event.currentTarget.getBoundingClientRect()
+      const clickX = event.clientX - x
+      const perc = clickX / width
+      const seconds = this.sound.duration() * perc
+
+      this.sound.seek(seconds)
+      this.sound.once('seek', this.progress)
     }
   },
   getters: {

@@ -36,7 +36,13 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  linkActiveClass: 'text-yellow-500'
+  linkActiveClass: 'text-yellow-500',
+  scrollBehavior() {
+    return {
+      top: 0,
+      behavior: 'smooth'
+    }
+  }
 })
 //for guarding our pages from un-authorized access:
 router.beforeEach((to, from, next) => {

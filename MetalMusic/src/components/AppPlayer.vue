@@ -16,7 +16,10 @@
       <!-- Current Position -->
       <div class="player-currenttime">{{ seek }}</div>
       <!-- Progress Container  -->
-      <div class="w-full h-2 rounded bg-gray-200 relative cursor-pointer">
+      <div
+        @click.prevent="updateSeek"
+        class="w-full h-2 rounded bg-gray-200 relative cursor-pointer"
+      >
         <!-- Player Ball -->
         <span
           class="absolute -top-2.5 -ml-2.5 text-gray-800 text-lg"
@@ -35,6 +38,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { mapActions, mapState } from 'pinia'
 import usePlayerStore from '@/stores/player'
@@ -45,7 +49,7 @@ export default {
     ...mapState(usePlayerStore, ['playing', 'duration', 'seek', 'playerProgress', 'current_song'])
   },
   methods: {
-    ...mapActions(usePlayerStore, ['toggleAudio'])
+    ...mapActions(usePlayerStore, ['toggleAudio', 'updateSeek'])
   }
 }
 </script>
