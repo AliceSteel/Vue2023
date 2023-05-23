@@ -26,10 +26,13 @@
     <!-- Main Content -->
     <section class="container mx-auto">
       <div class="bg-white rounded border border-gray-200 relative flex flex-col">
-        <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
+        <div
+          class="px-6 pt-6 pb-5 font-bold border-b border-gray-200"
+          v-icon-secondary="{ icon: 'headphones-alt', right: true }"
+        >
+          <!-- (global directive option:) v-icon.right.yellow="'headphones-alt'" -->
           <span class="card-title">Songs</span>
-          <!-- Icon -->
-          <i class="fa fa-headphones-alt float-right text-green-400 text-xl"></i>
+          <!-- Icon from directive-->
         </div>
         <!-- Playlist -->
         <ol id="playlist">
@@ -44,9 +47,15 @@
 <script>
 import { songsCollection } from '@/includes/firebase'
 import HomeSongItem from '@/components/HomeSongItem.vue'
+//for local Icon directive option:
+import IconSecondary from '@/directives/icon-secondary'
+
 export default {
   name: 'HomeView',
   components: { HomeSongItem },
+  directives: {
+    'icon-secondary': IconSecondary
+  },
   data() {
     return {
       songs: [],
