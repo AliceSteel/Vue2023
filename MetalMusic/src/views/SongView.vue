@@ -27,7 +27,9 @@
       <div class="bg-white rounded border border-gray-200 relative flex flex-col">
         <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
           <!-- Comment Count -->
-          <span class="card-title">Comments ({{ song.comment_count }})</span>
+          <span v-if="song.comment_count" class="card-title">{{ song.comment_count }}</span>
+          <span> {{ commentWord(song.comment_count) }}</span>
+
           <i class="fa fa-comments float-right text-green-400 text-2xl"></i>
         </div>
         <div class="p-6">
@@ -132,6 +134,7 @@ export default {
 
     this.song = docSnapshot.data()
     this.getComments()
+    this.commentWord(this.song_comment_count)
   },
   methods: {
     ...mapActions(usePlayerStore, ['newSong']),
@@ -152,6 +155,8 @@ export default {
 
       //to update the comments count:
       this.song.comment_count += 1
+      this.commentWord(this.song.comment_count)
+
       await songsCollection.doc(this.$route.params.id).update({
         comment_count: this.song.comment_count
       })
@@ -175,6 +180,15 @@ export default {
           ...doc.data()
         })
       })
+    },
+
+    commentWord(comment_count) {
+      if (comment_count) {
+        //checking if comments array exist
+        return comment_count > 1 ? ' comments' : ' comment'
+      } else {
+        return 'No comments'
+      }
     }
   },
   //to keep sorted selection when updating the page as query params
