@@ -7,6 +7,7 @@ import VeeValidatePlugin from './includes/validation'
 import { auth } from './includes/firebase'
 import Icon from './directives/icon'
 import { registerSW } from 'virtual:pwa-register'
+import GLobalComponents from '@/includes/_globals'
 
 import './assets/base.css'
 import './assets/main.css'
@@ -22,6 +23,8 @@ auth.onAuthStateChanged(() => {
     app.use(createPinia())
     app.use(router)
     app.use(VeeValidatePlugin)
+    app.use(GLobalComponents)
+
     app.directive('icon', Icon)
 
     app.mount('#app')

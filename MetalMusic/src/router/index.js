@@ -25,7 +25,7 @@ const routes = [
   {
     name: 'song',
     path: '/song/:id',
-    component: () => import(/* webpackChunkName: "Manage" */ '@/views/SongView.vue')
+    component: () => import(/* webpackChunkName: "Song" */ '@/views/SongView.vue')
   },
   {
     path: '/:catchAll(.*)*',
