@@ -6,9 +6,12 @@ import router from './router'
 import VeeValidatePlugin from './includes/validation'
 import { auth } from './includes/firebase'
 import Icon from './directives/icon'
+import { registerSW } from 'virtual:pwa-register'
 
 import './assets/base.css'
 import './assets/main.css'
+
+registerSW({ immidiate: true })
 
 let app
 

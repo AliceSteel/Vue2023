@@ -66,7 +66,17 @@ export default {
       const files = $event.dataTransfer ? [...$event.dataTransfer.files] : [...$event.target.files]
 
       files.forEach((file) => {
-        if (file.type !== 'audio/mpeg') {
+        if (file.type !== 'audio/mpeg' || !navigator.onLine) {
+          this.uploads.push({
+            task: {},
+            current_progress: 100,
+            name: file.name,
+            variant: 'bg-red-400',
+            icon: 'fas fa-times',
+            text_class: 'text-red-400',
+            error_message:
+              'Upload failed. Check your internet connection and/or file format is mp3.'
+          })
           return
         }
         const storageRef = storage.ref() //metal-music-forum.appspot.com
