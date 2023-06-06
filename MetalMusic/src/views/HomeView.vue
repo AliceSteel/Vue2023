@@ -1,47 +1,44 @@
 <template>
-  <main>
-    <!-- Introduction -->
-    <section class="mb-8 py-20 text-white text-center relative">
-      <div
-        class="absolute inset-0 w-full h-full bg-contain introduction-bg"
-        style="background-image: url(assets/img/header.png)"
-      ></div>
-      <div class="container mx-auto">
-        <div class="text-white main-header-content">
-          <h1 class="font-bold text-5xl mb-5">Listen to Great Music!</h1>
-          <p class="w-full md:w-8/12 mx-auto">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et dolor mollis,
-            congue augue non, venenatis elit. Nunc justo eros, suscipit ac aliquet imperdiet,
-            venenatis et sapien. Duis sed magna pulvinar, fringilla lorem eget, ullamcorper urna.
-          </p>
-        </div>
-      </div>
-
-      <img
-        class="relative block mx-auto mt-5 -mb-20 w-auto max-w-full"
-        src="/assets/img/introduction-music.png"
-      />
-    </section>
-
-    <!-- Main Content -->
-    <section class="container mx-auto">
-      <div class="bg-white rounded border border-gray-200 relative flex flex-col">
-        <div
-          class="px-6 pt-6 pb-5 font-bold border-b border-gray-200"
-          v-icon-secondary="{ icon: 'headphones-alt', right: true }"
+  <!-- Introduction -->
+  <section class="container mx-auto flex flex-wrap justify-between items-center max-h-screen">
+    <div class="w-2/5 text-white text-left">
+      <p>Welcome to MetalHead forum!</p>
+      <p>Here U can share/listen to new music & share your thoughts about it.</p>
+    </div>
+    <div class="w-3/5">
+      <div class="w-full relative h-0 pb-[67%]">
+        <video
+          loop
+          muted
+          preload
+          autoplay
+          class="absolute h-auto w-full -top-10 right-0 z-5 max-h-screen"
         >
-          <!-- (global directive option:) v-icon.right.yellow="'headphones-alt'" -->
-          <span class="card-title">Songs</span>
-          <!-- Icon from directive-->
-        </div>
-        <!-- Playlist -->
-        <ol id="playlist">
-          <home-song-item v-for="song in songs" :key="song.docID" :song="song" />
-        </ol>
-        <!-- .. end Playlist -->
+          <source src="/assets/video/panLeftRight.mp4" type="video/mp4" />
+          <source src="/assets/video/panLeftRight.webm" type="video/webm" />
+        </video>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="container mx-auto">
+    <div class="bg-transparent rounded border border-gray-200 relative flex flex-col">
+      <div
+        class="px-6 pt-6 pb-5 font-bold border-b border-gray-200"
+        v-icon-secondary="{ icon: 'headphones-alt', right: true }"
+      >
+        <!-- (global directive option:) v-icon.right.yellow="'headphones-alt'" -->
+        <span class="card-title">Songs</span>
+        <!-- Icon from directive-->
+      </div>
+      <!-- Playlist -->
+      <ol id="playlist">
+        <home-song-item v-for="song in songs" :key="song.docID" :song="song" />
+      </ol>
+      <!-- .. end Playlist -->
+    </div>
+  </section>
 </template>
 
 <script>
@@ -108,3 +105,23 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+/* .video_wrap {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  height: 0;
+  padding-bottom: 150%;
+}*/
+/* 16:9 = 56.25%*/
+
+/*video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 5;
+}*/
+</style>
