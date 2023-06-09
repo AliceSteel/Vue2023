@@ -1,42 +1,37 @@
 <template>
   <!-- Introduction -->
-  <section class="container mx-auto flex flex-wrap justify-between items-center max-h-screen">
+  <section
+    class="container mx-auto h-0 pb-[67%] flex flex-wrap justify-between items-end max-h-screen"
+  >
     <div class="w-2/5 text-white text-left">
       <p>Welcome to MetalHead forum!</p>
       <p>Here U can share/listen to new music & share your thoughts about it.</p>
     </div>
     <div class="w-3/5">
-      <div class="w-full relative h-0 pb-[67%]">
-        <video
-          loop
-          muted
-          preload
-          autoplay
-          class="absolute h-auto w-full -top-10 right-0 z-5 max-h-screen"
-        >
-          <source src="/assets/video/panLeftRight.mp4" type="video/mp4" />
-          <source src="/assets/video/panLeftRight.webm" type="video/webm" />
-        </video>
+      <div class="relative w-2/3 h-0 pb-[67%] float-right animation_wrap">
+        <img
+          class="absolute z-5 top-0 right-0"
+          src="/assets/img/guitarZombie.png"
+          alt="Zombie playing guitar"
+        />
       </div>
     </div>
   </section>
 
-  <!-- Main Content -->
-  <section class="container mx-auto">
+  <section class="container mx-auto pb-8">
     <div class="bg-transparent rounded border border-gray-200 relative flex flex-col">
       <div
-        class="px-6 pt-6 pb-5 font-bold border-b border-gray-200"
+        class="px-6 pt-6 pb-5 font-bold border-b border-white-200"
         v-icon-secondary="{ icon: 'headphones-alt', right: true }"
       >
         <!-- (global directive option:) v-icon.right.yellow="'headphones-alt'" -->
-        <span class="card-title">Songs</span>
+        <span class="card-title text-teal-400">Songs</span>
         <!-- Icon from directive-->
       </div>
       <!-- Playlist -->
       <ol id="playlist">
         <home-song-item v-for="song in songs" :key="song.docID" :song="song" />
       </ol>
-      <!-- .. end Playlist -->
     </div>
   </section>
 </template>
@@ -107,21 +102,29 @@ export default {
 </script>
 
 <style scoped>
-/* .video_wrap {
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
-  height: 0;
-  padding-bottom: 150%;
-}*/
-/* 16:9 = 56.25%*/
+.animation_wrap {
+  /* width: 450px;
+  height: 800px;*/
+  transform: rotateY(0deg) rotateX(0deg) scale(0.5);
+  transform-style: preserve-3d;
+  animation: 10s flipme linear infinite;
+  transition: transform 300ms ease;
+  transform-origin: 50% 50%;
+}
 
-/*video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  z-index: 5;
-}*/
+.animation_wrap:hover {
+  transform: rotateY(30deg) rotateX(5deg);
+}
+
+@keyframes flipme {
+  0% {
+    transform: rotateY(-30deg) rotateX(0deg);
+  }
+  50% {
+    transform: rotateY(0deg) rotateX(10deg);
+  }
+  100% {
+    transform: rotateY(-30deg) rotateX(0deg);
+  }
+}
 </style>
