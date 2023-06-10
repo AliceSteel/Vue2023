@@ -9,11 +9,6 @@ const routes = [
     component: HomeView
   },
   {
-    name: 'songs',
-    path: '/songs',
-    component: () => import(/* webpackChunkName: "About" */ '@/views/SongsView.vue')
-  },
-  {
     name: 'manage',
     //alias: '/manage',
     path: '/manage-music',
@@ -37,10 +32,19 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   linkActiveClass: 'text-yellow-500',
-  scrollBehavior() {
-    return {
-      top: 0,
-      behavior: 'smooth'
+  // eslint-disable-next-line no-unused-vars
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        // el: document.getElementById('main'):
+        el: to.hash,
+        behavior: 'smooth'
+      }
+    } else {
+      return {
+        top: 0,
+        behavior: 'smooth'
+      }
     }
   }
 })

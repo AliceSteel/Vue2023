@@ -18,7 +18,7 @@
     </div>
   </section>
 
-  <section class="container mx-auto pb-8">
+  <section id="songs" class="container mx-auto pb-8">
     <div class="bg-transparent rounded border border-gray-200 relative flex flex-col">
       <div
         class="px-6 pt-6 pb-5 font-bold border-b border-white-200"

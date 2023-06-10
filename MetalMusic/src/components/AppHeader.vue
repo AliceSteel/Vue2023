@@ -11,7 +11,12 @@
         <ul class="flex flex-row mt-1 text-2xl">
           <!-- Navigation Links -->
           <li>
-            <router-link :to="{ name: 'songs' }" class="px-8 text-white">Songs</router-link>
+            <router-link v-if="this.$route.name === 'home'" to="#songs" class="px-8 text-white"
+              >Songs</router-link
+            >
+            <router-link v-else :to="{ name: 'home', hash: '#songs' }" class="px-8 text-white"
+              >Songs</router-link
+            >
           </li>
           <li v-if="!userStore.userLoggedIn">
             <a class="px-8 text-white" href="#" @click.prevent="toggleAuthModal"
