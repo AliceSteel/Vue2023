@@ -1,5 +1,5 @@
 <template>
-  <main class="bg-black uppercase">
+  <main class="bg-black uppercase pb-8">
     <app-header />
 
     <router-view />
