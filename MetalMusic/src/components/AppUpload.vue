@@ -1,26 +1,45 @@
 <template>
-  <div class="bg-white rounded border border-gray-200 relative flex flex-col">
+  <div class="bg-transparent rounded border border-gray-200 relative flex flex-col">
     <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
-      <span class="card-title">Upload</span>
+      <span class="card-title text-white">Upload</span>
       <i class="fas fa-upload float-right text-green-400 text-2xl"></i>
     </div>
     <div class="p-6">
       <!-- Upload Dropbox -->
-      <div
-        class="w-full px-10 py-20 rounded text-center cursor-pointer border border-dashed border-gray-400 text-gray-400 transition duration-500 hover:text-white hover:bg-green-400 hover:border-green-400 hover:border-solid"
-        :class="{ 'bg-green-400 border-green-400 border-solid': isDragover }"
-        @drag.prevent.stop=""
-        @dragstart.prevent.stop=""
-        @dragend.prevent.stop="isDragover = false"
-        @dragover.prevent.stop="isDragover = true"
-        @dragenter.prevent.stop="isDragover = true"
-        @dragleave.prevent.stop="isDragover = false"
-        @drop.prevent.stop="upload($event)"
-      >
-        <h5>Drop your files here</h5>
+      <div class="relative w-full h-0 pb-[100%] cursor-pointer">
+        <video
+          loop
+          muted
+          preload
+          autoplay
+          class="absolute w-full h-auto top-0 left-0 z-5 rounded-full"
+        >
+          <source src="/assets/video/DropHere.mp4" type="video/mp4" />
+          <source src="/assets/video/DropHere.webm" type="video/webm" />
+        </video>
+
+        <div
+          class="w-full h-full bg-transparent absolute z-10 px-10 py-20 rounded-full transition duration-500 hover:bg-green-400/30 hover:border-green-400 hover:border-solid"
+          :class="{ 'bg-green-400 border-green-400 border-solid': isDragover }"
+          @drag.prevent.stop=""
+          @dragstart.prevent.stop=""
+          @dragend.prevent.stop="isDragover = false"
+          @dragover.prevent.stop="isDragover = true"
+          @dragenter.prevent.stop="isDragover = true"
+          @dragleave.prevent.stop="isDragover = false"
+          @drop.prevent.stop="upload($event)"
+        ></div>
       </div>
-      <input type="file" multiple @change="upload($event)" />
+      <div class="my-6"><span class="text-white">OR</span></div>
+      <input
+        type="file"
+        multiple
+        @change="upload($event)"
+        class="w-full appearance-none bg-grey border-solid rounded-lg file:text-violet-700 mt-0 py-1 focus:bg-green-400 hover:file:border-green-400"
+        placeholder="OR choose files"
+      />
       <hr class="my-6" />
+
       <!-- Progess Bars -->
       <div class="mb-4" v-for="upload in uploads" :key="upload.name">
         <!-- File Name -->
@@ -149,3 +168,18 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+/*.content_over_video {
+  position: absolute;
+  width: 80%;
+  height: 50%;
+  left: 5%;
+  bottom: 10%;
+  z-index: 6;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}*/
+</style>
