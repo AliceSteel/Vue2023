@@ -1,18 +1,18 @@
 <template>
-  <div class="border border-gray-200 p-3 mb-4 rounded">
-    <div v-show="!showForm">
-      <h4 class="inline-block text-2xl font-bold">{{ song.modified_name }}</h4>
+  <div class="border-b-2 border-white p-3 mb-4 rounded">
+    <div v-show="!showForm" class="py-3 flex justify-between items-center">
+      <h4 class="inline-block text-2xl text-white">{{ song.modified_name }}</h4>
       <button
-        class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right"
-        @click.prevent="deleteSong"
-      >
-        <i class="fa fa-times"></i>
-      </button>
-      <button
-        class="ml-1 py-1 px-2 text-sm rounded text-white bg-blue-600 float-right"
+        class="ml-1 py-1 px-2 text-sm rounded text-white bg-green-600 ml-auto"
         @click.prevent="showForm = !showForm"
       >
         <i class="fa fa-pencil-alt"></i>
+      </button>
+      <button
+        class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600"
+        @click.prevent="deleteSong"
+      >
+        <i class="fa fa-times"></i>
       </button>
     </div>
     <div v-show="showForm">

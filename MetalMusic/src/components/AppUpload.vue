@@ -1,8 +1,8 @@
 <template>
   <div class="bg-transparent rounded border border-gray-200 relative flex flex-col">
-    <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
+    <div class="px-6 py-5 font-bold border-b border-gray-200 flex justify-between items-center">
       <span class="card-title text-white">Upload</span>
-      <i class="fas fa-upload float-right text-green-400 text-2xl"></i>
+      <i class="fas fa-upload text-green-400 text-2xl"></i>
     </div>
     <div class="p-6">
       <!-- Upload Dropbox -->

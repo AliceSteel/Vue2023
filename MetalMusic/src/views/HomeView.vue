@@ -53,7 +53,7 @@
       <!-- Playlist -->
       <ol id="playlist">
         <home-song-item v-for="song in songs" :key="song.docID" :song="song" />
-        <div v-show="pendingRequest && !allSongsFetched" class="mx-6 loader"></div>
+        <div v-show="pendingRequest && !allSongsFetched" class="m-6 loader"></div>
       </ol>
     </div>
   </section>

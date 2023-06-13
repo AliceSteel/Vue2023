@@ -1,13 +1,12 @@
 <template>
   <main>
     <!-- Music Header -->
-    <section class="w-full mb-8 py-14 text-center text-white relative">
+    <!--<section class="w-full mb-8 py-14 text-center text-white relative">
       <div
         class="absolute inset-0 w-full h-full box-border bg-contain music-bg"
         style="background-image: url(/assets/img/song-header.png)"
       ></div>
       <div class="container mx-auto flex items-center">
-        <!-- Play/Pause Button -->
         <button
           @click.prevent="newSong(song)"
           type="button"
@@ -16,16 +15,43 @@
           <i class="fas fa-play"></i>
         </button>
         <div class="z-50 text-left ml-8">
-          <!-- Song Info -->
           <div class="text-3xl font-bold">{{ song.modified_name }}</div>
           <div>{{ song.genre }}</div>
         </div>
       </div>
+    </section>-->
+    <section>
+      <div class="container mx-auto flex items-center justify-between bg-transparent">
+        <button
+          @click.prevent="newSong(song)"
+          type="button"
+          class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
+        >
+          <i class="fas fa-play"></i>
+        </button>
+        <div class="z-50 text-left ml-8 mr-auto">
+          <div class="text-3xl font-bold text-white">{{ song.modified_name }}</div>
+          <div>{{ song.genre }}</div>
+        </div>
+        <div class="w-2/4 h-0 pb-[50%] rounded-full overflow-hidden aspect-square">
+          <div class="w-full relative">
+            <div class="leftHand">
+              <img src="/assets/img/leftHand2.png" alt="" />
+            </div>
+            <div class="drummerBody">
+              <img src="/assets/img/withoutLeftHand2.png" alt="" />
+            </div>
+            <div class="rightHand">
+              <img src="/assets/img/righthand.png" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
     <!-- Form -->
-    <section class="container mx-auto mt-6" id="comments">
-      <div class="bg-white rounded border border-gray-200 relative flex flex-col">
-        <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
+    <section class="container mx-auto mt-6 text-white" id="comments">
+      <div class="rounded border relative flex flex-col">
+        <div class="px-6 pt-6 pb-5 border-b border-gray-200">
           <!-- Comment Count -->
           <span v-if="song.comment_count" class="card-title">{{ song.comment_count }}</span>
           <span> {{ commentWord(song.comment_count) }}</span>
@@ -68,16 +94,12 @@
       </div>
     </section>
     <!-- Comments -->
-    <ul class="container mx-auto">
-      <li
-        class="p-6 bg-gray-50 border border-gray-200"
-        v-for="comment in sortedComments"
-        :key="comment.docID"
-      >
+    <ul class="container mx-auto text-white">
+      <li class="p-6 border border-gray-200" v-for="comment in sortedComments" :key="comment.docID">
         <!-- Comment Author -->
         <div class="mb-5">
-          <div class="font-bold">{{ comment.whoPosted }}</div>
-          <time>{{ comment.datePosted }}</time>
+          <div class="font-bold text-orange">{{ comment.whoPosted }}</div>
+          <time class="text-xs">{{ comment.datePosted }}</time>
         </div>
 
         <p>
@@ -209,3 +231,50 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.leftHand {
+  position: absolute;
+  width: 120px;
+  transform-origin: bottom left;
+  left: 223px;
+  top: 450px;
+  z-index: 5;
+  transform: rotate(0deg);
+  animation: pikaPat 0.7s alternate infinite;
+}
+.leftHand img {
+  width: 100%;
+}
+
+.drummerBody {
+  position: absolute;
+}
+
+.rightHand {
+  position: absolute;
+  left: 650px;
+  top: 240px;
+  transform-origin: bottom left;
+  transform: rotateY(0deg) rotateX(0deg) scale(0.5);
+  transform-style: preserve-3d;
+  animation: rotateRight 1s alternate infinite;
+}
+
+@keyframes pikaPat {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-5deg);
+  }
+}
+@keyframes rotateRight {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(45deg) scale(1.1);
+  }
+}
+</style>
