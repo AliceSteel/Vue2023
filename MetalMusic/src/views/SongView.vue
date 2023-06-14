@@ -33,17 +33,12 @@
           <div class="text-3xl font-bold text-white">{{ song.modified_name }}</div>
           <div>{{ song.genre }}</div>
         </div>
-        <div class="w-2/4 h-0 pb-[50%] rounded-full overflow-hidden aspect-square">
-          <div class="w-full relative">
-            <div class="leftHand">
-              <img src="/assets/img/leftHand2.png" alt="" />
-            </div>
-            <div class="drummerBody">
-              <img src="/assets/img/withoutLeftHand2.png" alt="" />
-            </div>
-            <div class="rightHand">
-              <img src="/assets/img/righthand.png" alt="" />
-            </div>
+        <div class="w-2/4 h-0 pb-[50%] overflow-hidden aspect-square rounded-lg">
+          <div class="w-full relative h-0 pb-[50%]">
+            <video loop muted preload autoplay class="absolute w-full h-auto top-0 left-0 z-5">
+              <source src="/assets/video/drummer.mp4" type="video/mp4" />
+              <source src="/assets/video/drummer.webm" type="video/webm" />
+            </video>
           </div>
         </div>
       </div>
@@ -231,50 +226,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.leftHand {
-  position: absolute;
-  width: 120px;
-  transform-origin: bottom left;
-  left: 223px;
-  top: 450px;
-  z-index: 5;
-  transform: rotate(0deg);
-  animation: pikaPat 0.7s alternate infinite;
-}
-.leftHand img {
-  width: 100%;
-}
-
-.drummerBody {
-  position: absolute;
-}
-
-.rightHand {
-  position: absolute;
-  left: 650px;
-  top: 240px;
-  transform-origin: bottom left;
-  transform: rotateY(0deg) rotateX(0deg) scale(0.5);
-  transform-style: preserve-3d;
-  animation: rotateRight 1s alternate infinite;
-}
-
-@keyframes pikaPat {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(-5deg);
-  }
-}
-@keyframes rotateRight {
-  from {
-    transform: rotateX(0deg);
-  }
-  to {
-    transform: rotateX(45deg) scale(1.1);
-  }
-}
-</style>
