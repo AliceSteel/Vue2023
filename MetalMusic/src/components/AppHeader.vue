@@ -1,5 +1,9 @@
 <template>
-  <header id="header" class="bg-transparent w-full p-0">
+  <header
+    id="header"
+    class="w-full p-0 fixed top-0 left-0 z-50 backdrop-invert bg-black/60 drop-shadow-[0_0_5px_rgb(153,153,153)]"
+    :class="{ 'bg-black/30': this.$route.name === 'song' }"
+  >
     <nav class="container mx-auto flex justify-between items-center py-1 px-4">
       <!-- App Name -->
       <router-link :to="{ name: 'home' }" class="w-2/6"
@@ -60,3 +64,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#header {
+  transition: all 0.2s ease;
+}
+</style>

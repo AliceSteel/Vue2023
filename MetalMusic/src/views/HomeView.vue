@@ -1,17 +1,15 @@
 <template>
   <!-- Introduction -->
-  <section
-    class="container mx-auto h-0 pb-[67%] flex flex-wrap justify-between items-end max-h-screen"
-  >
-    <div class="w-2/5 text-white text-left">
+  <section class="container mx-auto h-[90vh] flex flex-wrap justify-between items-end mb-36">
+    <div class="w-2/5 self-center text-white text-left pb-10">
       <p>Welcome to MetalHead forum!</p>
-      <p>Here U can share/listen to new music & share your thoughts about it.</p>
+      <p>Here U can share/listen to new music</p>
+      <p>& share your thoughts about it.</p>
     </div>
-
     <router-link
       to="#songs"
       class="w-14"
-      :class="{ jump: isJumping }"
+      :class="{ bounce: isJumping }"
       @click="isJumping = !isJumping"
     >
       <svg
@@ -138,19 +136,17 @@ a:hover svg circle {
   stroke: #f59e0b;
 }
 
-.jump {
+.bounce {
   /*name-duration-function(ease,eas-in,linear)-delay-count-direction */
   animation: jump 0.7s ease 2s infinite alternate;
 }
 
-.jump:hover,
-a.jump:visited {
+.bounce:hover,
+a.bounce:visited {
   animation: none;
 }
 
 .animation_wrap {
-  /* width: 450px;
-  height: 800px;*/
   transform: rotateY(0deg) rotateX(0deg) scale(0.5);
   transform-style: preserve-3d;
   animation: 10s flipme linear infinite;

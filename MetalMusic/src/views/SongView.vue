@@ -1,35 +1,16 @@
 <template>
   <main>
     <!-- Music Header -->
-    <!--<section class="w-full mb-8 py-14 text-center text-white relative">
-      <div
-        class="absolute inset-0 w-full h-full box-border bg-contain music-bg"
-        style="background-image: url(/assets/img/song-header.png)"
-      ></div>
-      <div class="container mx-auto flex items-center">
-        <button
-          @click.prevent="newSong(song)"
-          type="button"
-          class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
-        >
-          <i class="fas fa-play"></i>
-        </button>
-        <div class="z-50 text-left ml-8">
-          <div class="text-3xl font-bold">{{ song.modified_name }}</div>
-          <div>{{ song.genre }}</div>
-        </div>
-      </div>
-    </section>-->
     <section>
       <div class="container mx-auto flex items-center justify-between bg-transparent">
         <button
           @click.prevent="newSong(song)"
           type="button"
-          class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
+          class="z-4 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
         >
           <i class="fas fa-play"></i>
         </button>
-        <div class="z-50 text-left ml-8 mr-auto">
+        <div class="z-4 text-left ml-8 mr-auto">
           <div class="text-3xl font-bold text-white">{{ song.modified_name }}</div>
           <div>{{ song.genre }}</div>
         </div>
@@ -46,6 +27,9 @@
     <!-- Form -->
     <section class="container mx-auto mt-6 text-white" id="comments">
       <div class="rounded border relative flex flex-col">
+        <div class="px-6 pt-6 pb-5 border-b border-gray-200 text-orange-800" v-if="!userLoggedIn">
+          <span>You can add a comment after logging in.</span>
+        </div>
         <div class="px-6 pt-6 pb-5 border-b border-gray-200">
           <!-- Comment Count -->
           <span v-if="song.comment_count" class="card-title">{{ song.comment_count }}</span>
@@ -89,7 +73,7 @@
       </div>
     </section>
     <!-- Comments -->
-    <ul class="container mx-auto text-white">
+    <ul class="container mx-auto text-white pb-10">
       <li class="p-6 border border-gray-200" v-for="comment in sortedComments" :key="comment.docID">
         <!-- Comment Author -->
         <div class="mb-5">

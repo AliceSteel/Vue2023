@@ -1,6 +1,6 @@
 <template>
   <!-- Main Content -->
-  <section class="container mx-auto mt-6 pb-8">
+  <section class="container mx-auto py-36">
     <div class="md:grid md:grid-cols-3 md:gap-4">
       <div class="col-span-1">
         <app-upload ref="upload" :addSong="addSong" />
