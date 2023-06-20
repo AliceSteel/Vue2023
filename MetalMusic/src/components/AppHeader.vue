@@ -15,24 +15,49 @@
         <ul class="flex flex-row mt-1 text-2xl">
           <!-- Navigation Links -->
           <li>
-            <router-link v-if="this.$route.name === 'home'" to="#songs" class="px-8 text-white"
-              >Songs</router-link
-            >
-            <router-link v-else :to="{ name: 'home', hash: '#songs' }" class="px-8 text-white"
-              >Songs</router-link
-            >
+            <router-link
+              v-if="this.$route.name === 'home'"
+              to="#songs"
+              class="px-4 text-white md:px-8"
+              title="Songs list"
+              ><span class="hidden md:inline-block">Songs</span>
+              <i class="fa fa-music text-green-400 text-2xl md:hidden"></i>
+            </router-link>
+            <router-link
+              v-else
+              :to="{ name: 'home', hash: '#songs' }"
+              class="px-4 text-white md:px-8"
+              title="Songs list"
+              ><span class="hidden md:inline-block">Songs</span>
+              <i class="fa fa-music text-green-400 text-2xl md:hidden"></i>
+            </router-link>
           </li>
           <li v-if="!userStore.userLoggedIn">
-            <a class="px-8 text-white" href="#" @click.prevent="toggleAuthModal"
-              >Login / Register</a
-            >
+            <a
+              class="px-4 text-white md:px-8"
+              href="#"
+              @click.prevent="toggleAuthModal"
+              title="Login"
+              ><span class="hidden md:inline-block">Login</span>
+              <i class="fa fa-eye text-green-400 text-2xl md:hidden"></i>
+            </a>
           </li>
           <template v-else>
             <li>
-              <router-link :to="{ name: 'manage' }" class="px-8 text-white">Upload</router-link>
+              <router-link
+                :to="{ name: 'manage' }"
+                class="px-4 text-white md:px-8"
+                title="Songs Upload"
+              >
+                <span class="hidden md:inline-block">Upload</span>
+                <i class="fa fa-cloud-upload-alt text-green-400 text-2xl md:hidden"></i>
+              </router-link>
             </li>
             <li>
-              <a class="px-8 text-white" href="#" @click.prevent="signOut">Logout</a>
+              <a class="px-4 text-white md:px-8" href="#" @click.prevent="signOut" title="Sign Out">
+                <span class="hidden md:inline-block">Logout</span>
+                <i class="fa fa-eye-slash text-green-400 text-2xl md:hidden"></i>
+              </a>
             </li>
           </template>
         </ul>

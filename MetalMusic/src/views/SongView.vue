@@ -2,7 +2,9 @@
   <main>
     <!-- Music Header -->
     <section>
-      <div class="container mx-auto flex items-center justify-between bg-transparent">
+      <div
+        class="container w-full mx-auto flex flex-wrap items-center justify-between gap-4 bg-transparent mb-36 pt-20"
+      >
         <button
           @click.prevent="newSong(song)"
           type="button"
@@ -10,11 +12,13 @@
         >
           <i class="fas fa-play"></i>
         </button>
-        <div class="z-4 text-left ml-8 mr-auto">
+        <div class="z-4 text-left ml-8 mr-auto md:w-1/4">
           <div class="text-3xl font-bold text-white">{{ song.modified_name }}</div>
           <div>{{ song.genre }}</div>
         </div>
-        <div class="w-2/4 h-0 pb-[50%] overflow-hidden aspect-square rounded-lg">
+        <div
+          class="w-full h-0 pb-[100%] overflow-hidden aspect-square rounded-lg md:w-2/4 md:pb-[55%] md:max-w-2xl"
+        >
           <div class="w-full relative h-0 pb-[50%]">
             <video loop muted preload autoplay class="absolute w-full h-auto top-0 left-0 z-5">
               <source src="/assets/video/drummer.mp4" type="video/mp4" />
@@ -73,7 +77,7 @@
       </div>
     </section>
     <!-- Comments -->
-    <ul class="container mx-auto text-white pb-10">
+    <ul class="container mx-auto text-white">
       <li class="p-6 border border-gray-200" v-for="comment in sortedComments" :key="comment.docID">
         <!-- Comment Author -->
         <div class="mb-5">

@@ -1,6 +1,8 @@
 <template>
   <!-- Introduction -->
-  <section class="container mx-auto h-[90vh] flex flex-wrap justify-between items-end mb-36">
+  <section
+    class="container w-full mx-auto h-[200vh] flex flex-wrap justify-between items-end mb-36 py-36 md:h-[90vh] md:pt-0"
+  >
     <div class="w-2/5 self-center text-white text-left pb-10">
       <p>Welcome to MetalHead forum!</p>
       <p>Here U can share/listen to new music</p>
@@ -27,7 +29,7 @@
         <circle opacity="1" cx="20" cy="20" r="19.5" stroke="white" />
       </svg>
     </router-link>
-    <div class="w-2/5 h-0 pb-[55%]">
+    <div class="h-0 pb-[200%] w-full md:w-2/5 md:pb-[55%]">
       <div class="relative w-full float-right animation_wrap">
         <img
           class="absolute z-5 top-0 right-0"
