@@ -34,22 +34,28 @@
         <div class="px-6 pt-6 pb-5 border-b border-gray-200 text-orange-800" v-if="!userLoggedIn">
           <span>You can add a comment after logging in.</span>
         </div>
-        <div class="px-6 pt-6 pb-5 border-b border-gray-200">
+        <div class="flex items-center p-6 border-b border-gray-200">
           <!-- Comment Count -->
           <span v-if="song.comment_count" class="card-title">{{ song.comment_count }}</span>
-          <span> {{ commentWord(song.comment_count) }}</span>
-
-          <i class="fa fa-comments float-right text-green-400 text-2xl"></i>
-        </div>
-        <div class="p-6">
-          <div
-            class="text-white text-center font-bold p-4 mb-4"
-            v-if="commentShowAlert"
-            :class="commentAlertVariant"
+          <span>&nbsp; {{ commentWord(song.comment_count) }}</span>
+          <!-- Sort Comments -->
+          <select
+            v-model="sort"
+            class="block py-1.5 px-3 ml-auto text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
           >
-            {{ commentAlertMessage }}
-          </div>
-          <vee-form :validation-schema="schema" @submit="addComment" v-if="userLoggedIn">
+            <option value="1">Newest</option>
+            <option value="2">Oldest</option>
+          </select>
+        </div>
+        <div
+          class="text-white text-center font-bold p-6 mb-4"
+          v-if="commentShowAlert"
+          :class="commentAlertVariant"
+        >
+          {{ commentAlertMessage }}
+        </div>
+        <div v-if="userLoggedIn" class="p-6">
+          <vee-form :validation-schema="schema" @submit="addComment">
             <vee-field
               as="textarea"
               name="comment"
@@ -65,31 +71,27 @@
               Submit
             </button>
           </vee-form>
-          <!-- Sort Comments -->
-          <select
-            v-model="sort"
-            class="block mt-4 py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-          >
-            <option value="1">Newest</option>
-            <option value="2">Oldest</option>
-          </select>
         </div>
       </div>
-    </section>
-    <!-- Comments -->
-    <ul class="container mx-auto text-white">
-      <li class="p-6 border border-gray-200" v-for="comment in sortedComments" :key="comment.docID">
-        <!-- Comment Author -->
-        <div class="mb-5">
-          <div class="font-bold text-orange">{{ comment.whoPosted }}</div>
-          <time class="text-xs">{{ comment.datePosted }}</time>
-        </div>
+      <!-- Comments -->
+      <ul class="w-full text-white">
+        <li
+          class="p-6 border border-gray-200"
+          v-for="comment in sortedComments"
+          :key="comment.docID"
+        >
+          <!-- Comment Author -->
+          <div class="mb-5">
+            <div class="font-bold text-orange">{{ comment.whoPosted }}</div>
+            <time class="text-xs">{{ comment.datePosted }}</time>
+          </div>
 
-        <p>
-          {{ comment.content }}
-        </p>
-      </li>
-    </ul>
+          <p>
+            {{ comment.content }}
+          </p>
+        </li>
+      </ul>
+    </section>
   </main>
 </template>
 
