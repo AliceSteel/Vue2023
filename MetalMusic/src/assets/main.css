@@ -6,7 +6,8 @@ a {
 }
 
 /* text-yellow-500 */
-a:hover {
+a:hover,
+a span:hover {
   color: #f59e0b;
   text-decoration: none;
 }
@@ -37,10 +38,6 @@ a:hover {
   background-color: #20d862;
   border-color: #20d862;
   border-style: solid;
-}
-
-input[type='file'] {
-  margin-top: 20px;
 }
 
 .progress-bar {

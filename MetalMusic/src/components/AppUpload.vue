@@ -6,21 +6,23 @@
     </div>
     <div class="p-6">
       <!-- Upload Dropbox -->
-      <div class="relative w-full h-0 pb-[100%] cursor-pointer">
+      <div class="relative w-full h-0 pb-[100%]">
         <video
           loop
           muted
           preload
           autoplay
-          class="absolute w-full h-auto top-0 left-0 z-5 rounded-full"
+          class="absolute w-full h-auto top-0 left-0 z-10 rounded-full"
         >
           <source src="/assets/video/DropHere.mp4" type="video/mp4" />
           <source src="/assets/video/DropHere.webm" type="video/webm" />
         </video>
 
         <div
-          class="w-full h-full bg-transparent absolute z-10 px-10 py-20 rounded-full transition duration-500 hover:bg-green-400/30 hover:border-green-400 hover:border-solid"
-          :class="{ 'bg-green-400 border-green-400 border-solid': isDragover }"
+          class="w-full h-full absolute z-20 px-10 py-20 rounded-full transition duration-500"
+          :class="{
+            'bg-lime-500/10 border-dotted shadow-cyan-500/50': isDragover
+          }"
           @drag.prevent.stop=""
           @dragstart.prevent.stop=""
           @dragend.prevent.stop="isDragover = false"
@@ -30,14 +32,16 @@
           @drop.prevent.stop="upload($event)"
         ></div>
       </div>
-      <div class="my-6"><span class="text-white">OR</span></div>
-      <input
-        type="file"
-        multiple
-        @change="upload($event)"
-        class="w-full appearance-none bg-grey border-solid rounded-lg file:text-violet-700 mt-0 py-1 focus:bg-green-400 hover:file:border-green-400"
-        placeholder="OR choose files"
-      />
+      <div class="my-6 flex justify-items-start items-center gap-2">
+        <span class="inline-block text-white">OR</span>
+        <input
+          type="file"
+          multiple
+          @change="upload($event)"
+          class="inline-block appearance-none self-center bg-grey border-solid rounded-lg file:text-violet-700 focus:bg-green-400 hover:file:border-green-400 hover:file:cursor-pointer"
+        />
+      </div>
+
       <hr class="my-6" />
 
       <!-- Progess Bars -->
