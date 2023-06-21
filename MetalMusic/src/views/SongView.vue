@@ -3,16 +3,16 @@
     <!-- Music Header -->
     <section>
       <div
-        class="container w-full mx-auto flex flex-wrap items-center justify-between gap-4 bg-transparent mb-36 pt-20"
+        class="container w-full mx-auto flex flex-wrap items-center justify-between gap-4 bg-transparent py-20"
       >
         <button
           @click.prevent="newSong(song)"
           type="button"
-          class="z-4 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
+          class="z-10 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
         >
           <i class="fas fa-play"></i>
         </button>
-        <div class="z-4 text-left ml-8 mr-auto md:w-1/4">
+        <div class="z-20 text-left ml-8 mr-auto md:w-1/4">
           <div class="text-3xl font-bold text-white">{{ song.modified_name }}</div>
           <div>{{ song.genre }}</div>
         </div>
@@ -29,7 +29,7 @@
       </div>
     </section>
     <!-- Form -->
-    <section class="container mx-auto mt-6 text-white" id="comments">
+    <section class="container mx-auto my-6 text-white" id="comments">
       <div class="rounded border relative flex flex-col">
         <div class="px-6 pt-6 pb-5 border-b border-gray-200 text-orange-800" v-if="!userLoggedIn">
           <span>You can add a comment after logging in.</span>

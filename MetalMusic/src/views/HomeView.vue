@@ -148,7 +148,7 @@ a:hover svg circle {
 }
 
 .heading::before {
-  top: -0.5rem; /*// let it overlap a bit to prevent thin line which could appear during scaling in some browsers etc.*/
+  top: -0.5rem;
   bottom: -0.5rem;
   left: 1rem;
   right: 1rem;
