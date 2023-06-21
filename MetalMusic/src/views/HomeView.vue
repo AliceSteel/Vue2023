@@ -1,12 +1,13 @@
 <template>
   <!-- Introduction -->
   <section
-    class="container w-full mx-auto h-[200vh] flex flex-wrap justify-between items-end mb-36 py-36 md:h-[90vh] md:pt-0"
+    class="container w-full mx-auto h-[180vh] flex flex-wrap justify-between items-end py-36 md:h-screen md:pt-0 md:mb-36"
   >
-    <div class="w-2/5 self-center text-white text-left pb-10">
-      <p>Welcome to MetalHead forum!</p>
-      <p>Here U can share/listen to new music</p>
-      <p>& share your thoughts about it.</p>
+    <div class="w-2/6 relative self-center text-white text-left p-8 border-2 border-white heading">
+      <div class="relative z-10">
+        <p>Welcome to MetalHead community!</p>
+        <p>Here U can share/listen to new music & share your thoughts about it.</p>
+      </div>
     </div>
     <router-link
       to="#songs"
@@ -29,7 +30,7 @@
         <circle opacity="1" cx="20" cy="20" r="19.5" stroke="white" />
       </svg>
     </router-link>
-    <div class="h-0 pb-[200%] w-full md:w-2/5 md:pb-[55%]">
+    <div class="h-0 pb-[160%] w-full md:w-2/5 md:pb-[48%]">
       <div class="relative w-full float-right animation_wrap">
         <img
           class="absolute z-5 top-0 right-0"
@@ -136,6 +137,28 @@ export default {
 a:hover svg,
 a:hover svg circle {
   stroke: #f59e0b;
+}
+/*text border: */
+.heading::before,
+.heading::after {
+  content: '';
+  display: block;
+  position: absolute;
+  background: #000;
+}
+
+.heading::before {
+  top: -0.5rem; /*// let it overlap a bit to prevent thin line which could appear during scaling in some browsers etc.*/
+  bottom: -0.5rem;
+  left: 1rem;
+  right: 1rem;
+}
+
+.heading::after {
+  left: -0.3em;
+  right: -0.3em;
+  top: 1em;
+  bottom: 1em;
 }
 
 .bounce {
