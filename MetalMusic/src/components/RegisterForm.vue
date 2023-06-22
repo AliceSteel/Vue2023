@@ -128,7 +128,7 @@ export default {
         name: 'required|min:3|max:100|alphaSpaces',
         email: 'required|min:3|max:100|email',
         age: 'required|minVal:18|maxVal:100',
-        password: 'required|min:9|max:100|excluded:password',
+        password: 'required|min:8|max:100|excluded:password',
         confirm_password: 'required|passwordsMismatch:@password', //@[name] should correspond to field [name] to confirm
         country: 'required|excluded:other',
         role: 'required',
