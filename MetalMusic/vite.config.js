@@ -20,7 +20,7 @@ export default defineConfig({
         theme_color: '#7d1f0a',
         icons: [
           {
-            src: 'assets/img/fork-192x192.png',
+            src: '/fork-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           }
