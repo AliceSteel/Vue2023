@@ -50,7 +50,7 @@ export default {
     return {
       loginSchema: {
         email: 'required|email',
-        password: 'required|min:9|max:100'
+        password: 'required|min:8|max:100'
       },
       loginInSubmission: false, //to disable submit button
       loginShowAlert: false,
