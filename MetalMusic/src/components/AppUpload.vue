@@ -172,18 +172,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-/*.content_over_video {
-  position: absolute;
-  width: 80%;
-  height: 50%;
-  left: 5%;
-  bottom: 10%;
-  z-index: 6;
-  padding: 1rem;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-}*/
-</style>
