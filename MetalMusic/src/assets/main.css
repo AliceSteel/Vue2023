@@ -1,3 +1,6 @@
+main {
+  will-change: transform, opacity;
+}
 .container {
   width: 90%;
 }
@@ -21,12 +24,6 @@ a span:hover {
 .card .card-header .fas.text-orange {
   color: #ff5e3a;
   fill: #ff5e3a;
-}
-
-.introduction-bg {
-  animation: slide 50s linear infinite;
-  will-change: background-position;
-  z-index: -1;
 }
 
 #playlist li:first-child {
