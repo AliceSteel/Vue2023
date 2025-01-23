@@ -3,8 +3,9 @@
     <!-- Music Header -->
     <section>
       <div
-        class="container w-full mx-auto flex flex-wrap items-center justify-between gap-4 bg-transparent py-20"
+        class="container w-full mx-auto flex flex-col items-center justify-between gap-4 bg-transparent py-20"
       >
+        <spectrum-visualizer />
         <button
           @click.prevent="newSong(song)"
           type="button"
@@ -19,12 +20,12 @@
         <div
           class="w-full h-0 pb-[100%] overflow-hidden aspect-square rounded-lg md:w-2/4 md:pb-[55%] md:max-w-2xl"
         >
-          <div class="w-full relative h-0 pb-[50%]">
+          <!--  <div class="w-full relative h-0 pb-[50%]">
             <video loop muted preload autoplay class="absolute w-full h-auto top-0 left-0 z-5">
               <source src="/assets/video/drummer.mp4" type="video/mp4" />
               <source src="/assets/video/drummer.webm" type="video/webm" />
             </video>
-          </div>
+          </div> -->
         </div>
       </div>
     </section>
@@ -97,12 +98,14 @@
 
 <script>
 import { songsCollection, auth, commentsCollection } from '@/includes/firebase'
+import SpectrumVisualizer from '../components/SpectrumVisualizer.vue'
 import { mapState, mapActions } from 'pinia'
 import useUserStore from '@/stores/user'
 import usePlayerStore from '@/stores/player'
 
 export default {
   name: 'SongView',
+  components: { SpectrumVisualizer },
   data() {
     return {
       song: {},
