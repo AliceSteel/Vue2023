@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Howl } from 'howler'
+import { Howl, Howler } from 'howler'
 import helper from '@/includes/helper'
 
 export default defineStore('player', {
@@ -11,23 +11,51 @@ export default defineStore('player', {
     playerProgress: '0%'
   }),
   actions: {
-    async newSong(song) {
-      if (this.sound instanceof Howl) {
-        this.sound.unload()
+    async loadSong() {
+      try {
+        if (this.sound instanceof Howl) {
+          this.sound.unload()
+        }
+
+        this.sound = new Howl({
+          src: [this.current_song.url],
+          html5: true,
+          crossOrigin: 'anonymous'
+        })
+
+        await new Promise((resolve, reject) => {
+          this.sound.once('load', () => {
+            resolve()
+          })
+          this.sound.once('loaderror', (id, error) => {
+            reject(error)
+          })
+        })
+      } catch (error) {
+        console.error('Error loading or playing the song:', error)
       }
-
-      this.current_song = song
-
-      this.sound = new Howl({
-        src: [song.url],
-        html5: true
-      })
-      this.sound.play()
-
-      this.sound.on('play', () => {
-        requestAnimationFrame(this.progress)
-      })
     },
+    async playSong() {
+      try {
+        if (!(this.sound instanceof Howl)) {
+          console.error('No sound loaded')
+          return
+        }
+
+        // Resume the Howler AudioContext before playing the song
+        if (Howler.ctx.state === 'suspended') {
+          await Howler.ctx.resume()
+        }
+
+        this.sound.play()
+        this.sound.on('play', () => {
+          requestAnimationFrame(this.progress)
+        })
+      } catch (error) {
+        console.error('Error playing the song:', error)
+      }
+    },
+
     async toggleAudio() {
       //checking if 'playing'object is available on Howl object:
       if (!this.sound.playing) {

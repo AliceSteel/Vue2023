@@ -17,13 +17,14 @@
     "firebase": "^8.10.1",
     "howler": "^2.2.3",
     "nprogress": "^0.2.0",
-    "p5": "^1.11.2",
+    "p5": "^1.11.3",
     "pinia": "^2.0.32",
     "vee-validate": "^4.8.6",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
+    "@types/howler": "^2.2.12",
     "@types/p5": "^1.7.6",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.1.0",

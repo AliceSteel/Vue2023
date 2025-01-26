@@ -7,7 +7,7 @@
       >
         <spectrum-visualizer />
         <button
-          @click.prevent="newSong(song)"
+          @click.prevent="playSong()"
           type="button"
           class="z-10 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
         >
@@ -102,6 +102,7 @@ import SpectrumVisualizer from '../components/SpectrumVisualizer.vue'
 import { mapState, mapActions } from 'pinia'
 import useUserStore from '@/stores/user'
 import usePlayerStore from '@/stores/player'
+import { storeToRefs } from 'pinia'
 
 export default {
   name: 'SongView',
@@ -145,12 +146,14 @@ export default {
       vm.sort = sort === '1' || sort === '2' ? sort : '1'
 
       vm.song = docSnapshot.data()
+      const { current_song } = storeToRefs(usePlayerStore())
+      current_song.value = vm.song
       vm.getComments()
       vm.commentWord(vm.song_comment_count)
     })
   },
   methods: {
-    ...mapActions(usePlayerStore, ['newSong']),
+    ...mapActions(usePlayerStore, ['playSong']),
     async addComment(values, { resetForm }) {
       this.commentInSubmission = true
       this.commentShowAlert = true
