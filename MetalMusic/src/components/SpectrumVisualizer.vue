@@ -1,37 +1,59 @@
 <template>
-  <div
-    class="mt-10 h-96 w-full text-white border-red-500 border-solid border-2"
-    ref="canvasContainer"
-  >
-    <button @click.prevent="handleUserAction">Start/Load Audio (Howler context)</button>
+  <div class="relative">
+    <div
+      class="w-full absolute z-20 flex justify-center gap-5 transition-all duration-500 ease-out mt-10"
+      :class="{ 'translate-y-60 mt-0': !isSoundPLaying }"
+    >
+      <h1 class="text-3xl font-bold text-white pt-3">
+        {{ current_song.modified_name }}
+      </h1>
+      <button
+        v-if="!isSoundPLaying"
+        @click.prevent="handlePlay"
+        type="button"
+        class="h-14 w-14 text-3xl bg-white text-black rounded-full focus:outline-none"
+      >
+        <i class="fas fa-play"></i>
+      </button>
+      <button
+        v-else
+        @click.prevent="handlePause"
+        type="button"
+        class="h-14 w-14 text-3xl bg-white text-black rounded-full focus:outline-none"
+      >
+        <i class="fas fa-pause"></i>
+      </button>
+    </div>
+    <div
+      class="w-full h-[70vh]"
+      ref="canvasContainer"
+      :class="{ 'overflow-hidden': isSoundPLaying }"
+    ></div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { Howler, Howl } from 'howler'
 import p5 from 'p5'
 import usePlayerStore from '@/stores/player'
 import { storeToRefs } from 'pinia'
-import testSong from '@/assets/stomper_reggae_bit.mp3'
 
 const playerStore = usePlayerStore()
 const { current_song, sound } = storeToRefs(playerStore)
 const { loadSong, playSong } = playerStore
 
-// references
 const canvasContainer = ref(null)
 const p5Instance = ref(null)
 let fft = null
 const soundLoaded = ref(false)
 let sound2
-let sourceNode
+const isSoundPLaying = ref(false)
 
 // A simple p5 sketch that doesn't do audio in preload()
 const Sketch = (p) => {
   p.setup = () => {
-    console.log('p5 setup called')
-    p.createCanvas(p.windowWidth, p.windowHeight).parent(canvasContainer.value)
+    const width = canvasContainer.value.clientWidth
+    p.createCanvas(width, p.windowHeight * 0.7).parent(canvasContainer.value)
     p.background(0)
 
     // Create our FFT instance now, even if no sound is loaded yet
@@ -41,22 +63,17 @@ const Sketch = (p) => {
   p.draw = () => {
     p.background(0)
 
-    // If we have a sound loaded, let’s visualize it
     if (soundLoaded.value && fft) {
-      console.log('Drawing spectrum because we have FFT')
       const spectrum = fft.analyze()
+      const barWidth = p.width / spectrum.length
       for (let i = 0; i < spectrum.length; i++) {
-        const g = p.map(spectrum[i], 0, 255, 255, 0)
-        p.fill(spectrum[i], g, 0)
-        const y = p.map(i, 0, spectrum.length, 0, p.height)
-        const w = p.map(spectrum[i], 0, 255, 0, p.width)
-        p.rect(0, y, w, p.height / spectrum.length)
+        const amplitude = spectrum[i]
+        // Map amplitude to a vertical height
+        const barHeight = p.map(amplitude, 0, 255, 0, p.height)
+        // Calculate an x-position for each bin
+        const x = i * barWidth
+        p.rect(x, p.height - barHeight, barWidth, barHeight)
       }
-    } else {
-      // Simple message before sound is loaded
-      p.fill(255)
-      p.textSize(32)
-      p.text('Click button to load & start audio', 50, 50)
     }
   }
   p.windowResized = () => {
@@ -73,68 +90,37 @@ onMounted(async () => {
   p5Instance.value = new p5(Sketch, canvasContainer.value)
 })
 
-async function handleUserAction() {
-  console.log('User clicked button')
+async function handlePlay() {
   if (!p5Instance.value) {
     console.log('No p5 instance found so returning')
     return
   }
 
   if (!soundLoaded.value) {
-    // Use p5’s loadSound inside the user gesture, passing local MP3
     sound2 = p5Instance.value.loadSound(
       current_song.value.url,
       () => {
-        console.log('Sound finished loading')
         soundLoaded.value = true
         // Connect it to FFT
         fft.setInput(sound2)
         // Auto-play once loaded
         sound2.play()
+        isSoundPLaying.value = true
       },
       (err) => {
         console.error('Error loading sound:', err)
       }
     )
-  }
-
-  /*  const audioCtx = p5Instance.value.getAudioContext()
-  // Resume the context first
-  await audioCtx.resume()
-  console.log('AudioContext resumed')
-
-  // If sound is NOT yet loaded, load it now
-  if (!soundLoaded.value) {
-    await loadSong()
-    await playSong()
-    soundLoaded.value = true
-  }
-  // Ensure Howler context is initialized
-  if (!Howler.ctx) {
-    Howler.ctx = new (window.AudioContext || window.webkitAudioContext)()
-  }
-  p5.soundOut.audiocontext = Howler.ctx
-
-  // Create a source node from the Howler sound
-  if (!sourceNode) {
-    sourceNode = Howler.ctx.createMediaElementSource(sound.value._sounds[0]._node)
-    sourceNode.connect(Howler.ctx.destination)
-  }
-  // Connect the source node to the p5 FFT
-  try {
-    fft.setInput(sourceNode)
-    console.log('Connected Howler node to p5.FFT')
-  } catch (error) {
-    console.error('Error connecting to FFT:', error)
-  }
-  // Play or pause the sound
-  if (!sound.value.playing()) {
-    sound.value.play()
   } else {
-    sound.value.pause()
-  } */
+    // If sound is already loaded, just play it
+    sound2.play()
+    isSoundPLaying.value = true
+  }
 }
-
+const handlePause = () => {
+  sound2.pause()
+  isSoundPLaying.value = false
+}
 onUnmounted(() => {
   if (p5Instance.value) {
     p5Instance.value.remove()

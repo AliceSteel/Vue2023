@@ -40,45 +40,39 @@
   </vee-form>
 </template>
 
-<script>
-import { mapActions } from 'pinia'
+<script setup>
+import { ref } from 'vue'
 import useUserStore from '@/stores/user'
+import { ErrorMessage } from 'vee-validate'
 
-export default {
-  name: 'LoginForm',
-  data() {
-    return {
-      loginSchema: {
-        email: 'required|email',
-        password: 'required|min:8|max:100'
-      },
-      loginInSubmission: false, //to disable submit button
-      loginShowAlert: false,
-      loginAlertVariant: 'bg-blue-500',
-      loginAlertMessage: 'Please wait! We are logging you in.'
-    }
-  },
-  methods: {
-    ...mapActions(useUserStore, ['authenticate']),
-    async login(values) {
-      this.loginShowAlert = true
-      this.loginInSubmission = true
-      this.loginAlertVariant = 'bg-blue-500'
-      this.loginAlertMessage = 'Please wait! We are logging you in.'
+const loginSchema = {
+  email: 'required|email',
+  password: 'required|min:8|max:100'
+}
+const loginInSubmission = ref(false)
+const loginShowAlert = ref(false)
+const loginAlertVariant = ref('bg-blue-500')
+const loginAlertMessage = ref('Please wait! We are logging you in.')
 
-      try {
-        await this.authenticate(values)
-      } catch (error) {
-        this.loginInSubmission = false
-        this.loginAlertVariant = 'bg-red-500'
-        this.loginAlertMessage = 'Invalid login details.'
-        return
-      }
+const userStore = useUserStore()
 
-      this.loginAlertVariant = 'bg-green-500'
-      this.loginAlertMessage = 'Success!'
-      window.location.reload()
-    }
+// Methods
+async function login(values) {
+  loginShowAlert.value = true
+  loginInSubmission.value = true
+  loginAlertVariant.value = 'bg-blue-500'
+  loginAlertMessage.value = 'Please wait! We are logging you in.'
+  try {
+    await userStore.authenticate(values)
+  } catch (error) {
+    loginInSubmission.value = false
+    loginAlertVariant.value = 'bg-red-500'
+    loginAlertMessage.value = 'Invalid login details.'
+    return
   }
+
+  loginAlertVariant.value = 'bg-green-500'
+  loginAlertMessage.value = 'Success!'
+  window.location.reload()
 }
 </script>

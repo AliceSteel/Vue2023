@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { auth, usersCollection } from '@/includes/firebase'
 
-export default defineStore('user', {
+export const useUserStore = defineStore('user', {
   state: () => ({
     userLoggedIn: false
   }),

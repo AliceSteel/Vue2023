@@ -1,14 +1,17 @@
 <template>
   <header
     id="header"
-    class="w-full p-0 fixed top-0 left-0 z-50 backdrop-blur-sm drop-shadow-[0_0_5px_rgb(153,153,153)]"
-    :class="{ 'bg-black/30': this.$route.name === 'song' }"
+    class="w-full h-24 fixed top-0 left-0 z-30 backdrop-blur-sm drop-shadow-[0_0_5px_rgb(153,153,153)]"
+    :class="{ 'bg-black/30': route.name === 'song' }"
   >
-    <nav class="container mx-auto flex justify-between items-center py-1">
+    <nav class="container mx-auto flex justify-end items-center h-full">
       <!-- App Name -->
-      <router-link :to="{ name: 'home' }" class="w-2/4 md:w-2/6"
-        ><img class="w-full" src="/assets/img/logo-white.png" alt="Metalhead"
-      /></router-link>
+      <router-link
+        :to="{ name: 'home' }"
+        class="mr-auto max-w-[50%] sm:max-w-[30%] py-2 text-3xl text-white"
+        title="home"
+        >TuneThread
+      </router-link>
 
       <div class="flex justify-between content-center">
         <!-- Primary Navigation -->
@@ -16,15 +19,6 @@
           <!-- Navigation Links -->
           <li>
             <router-link
-              v-if="this.$route.name === 'home'"
-              to="#songs"
-              class="px-4 text-white md:px-8"
-              title="Songs list"
-              ><span class="hidden md:inline-block">Songs</span>
-              <i class="fa fa-music text-green-400 text-2xl md:hidden"></i>
-            </router-link>
-            <router-link
-              v-else
               :to="{ name: 'home', hash: '#songs' }"
               class="px-4 text-white md:px-8"
               title="Songs list"
@@ -32,7 +26,7 @@
               <i class="fa fa-music text-green-400 text-2xl md:hidden"></i>
             </router-link>
           </li>
-          <li v-if="!userStore.userLoggedIn">
+          <li v-if="!userLoggedIn">
             <a
               class="px-4 text-white md:px-8"
               href="#"
@@ -66,26 +60,28 @@
   </header>
 </template>
 
-<script>
-import { mapStores } from 'pinia'
+<script setup>
 import useModalStore from '@/stores/modal'
 import useUserStore from '@/stores/user'
+import { storeToRefs } from 'pinia'
+import { useRouter, useRoute } from 'vue-router'
 
-export default {
-  name: 'AppHeader',
-  computed: {
-    ...mapStores(useModalStore, useUserStore)
-  },
-  methods: {
-    toggleAuthModal() {
-      this.modalStore.isOpen = !this.modalStore.isOpen
-    },
-    signOut() {
-      this.userStore.signOut()
-      if (this.$route.meta.requiresAuth) {
-        this.$router.push({ name: 'home' })
-      }
-    }
+const route = useRoute()
+const router = useRouter()
+const modalStore = useModalStore()
+const userStore = useUserStore()
+
+const { isOpen } = storeToRefs(modalStore)
+const { userLoggedIn } = storeToRefs(userStore)
+
+const toggleAuthModal = () => {
+  isOpen.value = !isOpen.value
+}
+
+const signOut = () => {
+  userStore.signOut()
+  if (route.meta.requiresAuth) {
+    router.push({ name: 'home' })
   }
 }
 </script>

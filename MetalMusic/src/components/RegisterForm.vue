@@ -115,58 +115,54 @@
   </vee-form>
 </template>
 
-<script>
-import { mapActions } from 'pinia'
-import useUserStore from '@/stores/user'
+<script setup>
+import { ref } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { ErrorMessage } from 'vee-validate'
 
-export default {
-  name: 'RegisterForm',
+const userData = ref({
+  country: 'Denmark',
+  role: 'listener'
+})
+const regInSubmission = ref(false)
+const regShowAlert = ref(false)
+const regAlertVariant = ref('bg-blue-500')
+const regAlertMessage = ref('Please wait! Your account is being created.')
 
-  data() {
-    return {
-      schema: {
-        name: 'required|min:3|max:100|alphaSpaces',
-        email: 'required|min:3|max:100|email',
-        age: 'required|minVal:18|maxVal:100',
-        password: 'required|min:8|max:100|excluded:password',
-        confirm_password: 'required|passwordsMismatch:@password', //@[name] should correspond to field [name] to confirm
-        country: 'required|excluded:other',
-        role: 'required',
-        tos: 'tos'
-      },
-      userData: {
-        country: 'Denmark',
-        role: 'listener'
-      },
-      regInSubmission: false,
-      regShowAlert: false,
-      regAlertVariant: 'bg-blue-500',
-      regAlertMessage: 'Please wait! Your account is being created.'
-    }
-  },
-  methods: {
-    ...mapActions(useUserStore, {
-      createUser: 'register'
-    }),
-    async register(values) {
-      this.regShowAlert = true
-      this.regInSubmission = true
-      this.regAlertVariant = 'bg-blue-500'
-      this.regAlertMessage = 'Please wait! Your account is being created.'
+// Store
+const userStore = useUserStore()
+const { createUser } = userStore
 
-      try {
-        await this.createUser(values)
-      } catch (error) {
-        this.regInSubmission = false
-        this.regAlertVariant = 'bg-red-500'
-        this.regAlertMessage = 'An unexpected error occured. Please try again later.'
-        return
-      }
+// State
+const schema = {
+  name: 'required|min:3|max:100|alphaSpaces',
+  email: 'required|min:3|max:100|email',
+  age: 'required|minVal:18|maxVal:100',
+  password: 'required|min:8|max:100|excluded:password',
+  confirm_password: 'required|passwordsMismatch:@password', //@[name] should correspond to field [name] to confirm
+  country: 'required|excluded:other',
+  role: 'required',
+  tos: 'tos'
+}
 
-      this.regAlertVariant = 'bg-green-500'
-      this.regAlertMessage = 'Success! Your acoount has been created.'
-      window.location.reload()
-    }
+// Methods
+async function register(values) {
+  regShowAlert.value = true
+  regInSubmission.value = true
+  regAlertVariant.value = 'bg-blue-500'
+  regAlertMessage.value = 'Please wait! Your account is being created.'
+
+  try {
+    await createUser(values)
+  } catch (error) {
+    regInSubmission.value = false
+    regAlertVariant.value = 'bg-red-500'
+    regAlertMessage.value = 'An unexpected error occurred. Please try again later.'
+    return
   }
+
+  regAlertVariant.value = 'bg-green-500'
+  regAlertMessage.value = 'Success! Your account has been created.'
+  window.location.reload()
 }
 </script>

@@ -3,7 +3,7 @@
     <div v-show="!showForm" class="py-3 flex justify-between items-center">
       <h4 class="inline-block text-2xl text-white">{{ song.modified_name }}</h4>
       <button
-        class="ml-1 py-1 px-2 text-sm rounded text-white bg-green-600 ml-auto"
+        class="ml-auto py-1 px-2 text-sm rounded text-white bg-green-600"
         @click.prevent="showForm = !showForm"
       >
         <i class="fa fa-pencil-alt"></i>
@@ -62,77 +62,70 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue'
 import { songsCollection, storage } from '@/includes/firebase'
 import { ErrorMessage } from 'vee-validate'
-export default {
-  name: 'SongItem',
-  components: { ErrorMessage },
-  props: {
-    song: {
-      type: Object,
-      required: true
-    },
-    updateSong: {
-      type: Function,
-      required: true
-    },
-    indx: {
-      type: Number,
-      required: true
-    },
-    removeSong: {
-      type: Function,
-      required: true
-    },
-    updateUnsavedFlag: {
-      type: Function
-    }
+
+const props = defineProps({
+  song: {
+    type: Object,
+    required: true
   },
-  data() {
-    return {
-      showForm: false,
-      schema: {
-        modified_name: 'required',
-        genre: 'alphaSpaces'
-      },
-      inSubmission: false,
-      showAlert: false,
-      alertVariant: 'bg-blue-500',
-      alertMessage: 'Please wait! Update is in a progress...'
-    }
+  updateSong: {
+    type: Function,
+    required: true
   },
-  methods: {
-    async edit(values) {
-      this.inSubmission = true
-      this.showAlert = true
-      this.alertVariant = 'bg-blue-500'
-      this.alertMessage = 'Please wait! Update is in a progress...'
-
-      try {
-        await songsCollection.doc(this.song.docID).update(values)
-      } catch (error) {
-        this.inSubmission = false
-        this.alertVariant = 'bg-red-500'
-        this.alertMessage = 'Something went wrong! Try again later'
-        return
-      }
-      this.updateSong(this.indx, values)
-      this.updateUnsavedFlag(false)
-      this.inSubmission = false
-      this.alertVariant = 'bg-green-500'
-      this.alertMessage = 'Success! Your updates were saved.'
-    },
-    async deleteSong() {
-      const storageRef = storage.ref()
-      const songRef = storageRef.child(`songs/${this.song.original_name}`)
-
-      await songRef.delete()
-
-      await songsCollection.doc(this.song.docID).delete()
-
-      this.removeSong(this.indx)
-    }
+  indx: {
+    type: Number,
+    required: true
+  },
+  removeSong: {
+    type: Function,
+    required: true
+  },
+  updateUnsavedFlag: {
+    type: Function
   }
+})
+const showForm = ref(false)
+const schema = {
+  modified_name: 'required',
+  genre: 'alphaSpaces'
+}
+const inSubmission = ref(false)
+const showAlert = ref(false)
+const alertVariant = ref('bg-blue-500')
+const alertMessage = ref('Please wait! Update is in a progress...')
+
+async function edit(values) {
+  inSubmission.value = true
+  showAlert.value = true
+  alertVariant.value = 'bg-blue-500'
+  alertMessage.value = 'Please wait! Update is in a progress...'
+
+  try {
+    await songsCollection.doc(props.song.docID).update(values)
+  } catch (error) {
+    inSubmission.value = false
+    alertVariant.value = 'bg-red-500'
+    alertMessage.value = 'Something went wrong! Try again later'
+    return
+  }
+  props.updateSong(props.indx, values)
+  props.updateUnsavedFlag(false)
+  inSubmission.value = false
+  alertVariant.value = 'bg-green-500'
+  alertMessage.value = 'Success! Your updates were saved.'
+}
+async function deleteSong() {
+  const storageRef = storage.ref()
+  const songRef = storageRef.child(`songs/${props.song.original_name}`)
+
+  await songRef.delete()
+
+  await songsCollection.doc(props.song.docID).delete()
+
+  props.removeSong(props.indx)
 }
 </script>

@@ -65,110 +65,100 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onBeforeUnmount } from 'vue'
 import { storage, auth, songsCollection } from '@/includes/firebase'
 
-export default {
-  name: 'AppUpload',
-  props: {
-    addSong: {
-      type: Function,
-      required: true
-    }
-  },
-  data() {
-    return {
-      isDragover: false,
-      uploads: []
-    }
-  },
-  methods: {
-    upload($event) {
-      this.isDragover = false
-      //spreading an object to an array as we need to loop over it(for dragAndDrop or input files upload ):
-      const files = $event.dataTransfer ? [...$event.dataTransfer.files] : [...$event.target.files]
-
-      files.forEach((file) => {
-        if (file.type !== 'audio/mpeg' || !navigator.onLine) {
-          this.uploads.push({
-            task: {},
-            current_progress: 100,
-            name: file.name,
-            variant: 'bg-red-400',
-            icon: 'fas fa-times',
-            text_class: 'text-red-400',
-            error_message:
-              'Upload failed. Check your internet connection and/or file format is mp3.'
-          })
-          return
-        }
-        const storageRef = storage.ref() //metal-music-forum.appspot.com
-        const songsRef = storageRef.child(`songs/${file.name}`) //metal-music-forum.appspot.com/songs/example.mp3
-        const task = songsRef.put(file) //to initialize upload process
-
-        const uploadIndex =
-          this.uploads.push({
-            task,
-            current_progress: 0,
-            name: file.name,
-            variant: 'bg-blue-400',
-            icon: 'fas fa-spinner fa-spin',
-            text_class: '',
-            error_message: ''
-          }) - 1
-
-        //Firebase: to listen on events(objects) that firebase returns:
-        task.on(
-          'state_changed',
-          (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            this.uploads[uploadIndex].current_progress = progress
-          },
-          //when upload is not successfull:
-          (error) => {
-            this.uploads[uploadIndex].variant = 'bg-red-400'
-            this.uploads[uploadIndex].icon = 'fas fa-times'
-            this.uploads[uploadIndex].text_class = 'text-red-400'
-            this.uploads[uploadIndex].error_message =
-              error.code === 'storage/unauthorized'
-                ? 'Upload failed. File should not exceed 10Mb'
-                : ''
-            console.log(error)
-          },
-          //when upload is a success:
-          async () => {
-            const song = {
-              uid: auth.currentUser.uid,
-              display_name: auth.currentUser.displayName,
-              original_name: task.snapshot.ref.name,
-              modified_name: task.snapshot.ref.name,
-              genre: '',
-              comment_count: 0
-            }
-            song.url = await task.snapshot.ref.getDownloadURL()
-
-            const songRef = await songsCollection.add(song)
-            const songSnapshot = await songRef.get()
-
-            this.addSong(songSnapshot)
-
-            this.uploads[uploadIndex].variant = 'bg-green-400'
-            this.uploads[uploadIndex].icon = 'fas fa-check'
-            this.uploads[uploadIndex].text_class = 'text-green-400'
-          }
-        )
-      })
-    },
-    cancelUploads() {
-      this.uploads.forEach((upload) => {
-        upload.task.cancel()
-      })
-    }
-  },
-  beforeUnmount() {
-    this.uploads.forEach((upload) => {
-      upload.task.cancel()
-    })
+const props = defineProps({
+  addSong: {
+    type: Function,
+    required: true
   }
+})
+const isDragover = ref(false)
+const uploads = ref([])
+
+function upload($event) {
+  isDragover.value = false
+  // Spreading an object to an array as we need to loop over it (for dragAndDrop or input files upload):
+  const files = $event.dataTransfer ? [...$event.dataTransfer.files] : [...$event.target.files]
+
+  files.forEach((file) => {
+    if (file.type !== 'audio/mpeg' || !navigator.onLine) {
+      uploads.value.push({
+        task: {},
+        current_progress: 100,
+        name: file.name,
+        variant: 'bg-red-400',
+        icon: 'fas fa-times',
+        text_class: 'text-red-400',
+        error_message: 'Upload failed. Check your internet connection and/or file format is mp3.'
+      })
+      return
+    }
+    const storageRef = storage.ref() // metal-music-forum.appspot.com
+    const songsRef = storageRef.child(`songs/${file.name}`) // metal-music-forum.appspot.com/songs/example.mp3
+    const task = songsRef.put(file) // to initialize upload process
+
+    const uploadIndex =
+      uploads.value.push({
+        task,
+        current_progress: 0,
+        name: file.name,
+        variant: 'bg-blue-400',
+        icon: 'fas fa-spinner fa-spin',
+        text_class: '',
+        error_message: ''
+      }) - 1
+    // Firebase: to listen on events (objects) that firebase returns:
+    task.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        uploads.value[uploadIndex].current_progress = progress
+      },
+      // When upload is not successful:
+      (error) => {
+        uploads.value[uploadIndex].variant = 'bg-red-400'
+        uploads.value[uploadIndex].icon = 'fas fa-times'
+        uploads.value[uploadIndex].text_class = 'text-red-400'
+        uploads.value[uploadIndex].error_message =
+          error.code === 'storage/unauthorized' ? 'Upload failed. File should not exceed 10Mb' : ''
+        console.log(error)
+      },
+      // When upload is a success:
+      async () => {
+        const song = {
+          uid: auth.currentUser.uid,
+          display_name: auth.currentUser.displayName,
+          original_name: task.snapshot.ref.name,
+          modified_name: task.snapshot.ref.name,
+          genre: '',
+          comment_count: 0
+        }
+        song.url = await task.snapshot.ref.getDownloadURL()
+
+        const songRef = await songsCollection.add(song)
+        const songSnapshot = await songRef.get()
+
+        props.addSong(songSnapshot)
+
+        uploads.value[uploadIndex].variant = 'bg-green-400'
+        uploads.value[uploadIndex].icon = 'fas fa-check'
+        uploads.value[uploadIndex].text_class = 'text-green-400'
+      }
+    )
+  })
 }
+function cancelUploads() {
+  uploads.value.forEach((upload) => {
+    upload.task.cancel()
+  })
+}
+
+onBeforeUnmount(() => {
+  uploads.value.forEach((upload) => {
+    upload.task.cancel()
+  })
+})
 </script>
