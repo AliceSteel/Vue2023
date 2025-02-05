@@ -42,7 +42,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import useUserStore from '@/stores/user'
+import { useUserStore } from '@/stores/user'
 import { ErrorMessage } from 'vee-validate'
 
 const loginSchema = {

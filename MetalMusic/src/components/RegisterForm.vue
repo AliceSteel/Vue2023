@@ -139,13 +139,12 @@ const schema = {
   email: 'required|min:3|max:100|email',
   age: 'required|minVal:18|maxVal:100',
   password: 'required|min:8|max:100|excluded:password',
-  confirm_password: 'required|passwordsMismatch:@password', //@[name] should correspond to field [name] to confirm
+  confirm_password: 'required|passwordsMismatch:@password',
   country: 'required|excluded:other',
   role: 'required',
   tos: 'tos'
 }
 
-// Methods
 async function register(values) {
   regShowAlert.value = true
   regInSubmission.value = true

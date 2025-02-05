@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import useUserStore from '@/stores/user'
+import HomePage from '@/views/HomePage.vue'
+import { useUserStore } from '@/stores/user'
 
 const routes = [
   {
     name: 'home',
     path: '/',
-    component: HomeView
+    component: HomePage
   },
   {
     name: 'manage',
     //alias: '/manage',
     path: '/manage-music',
-    component: () => import(/* webpackChunkName: "Manage" */ '@/views/ManageView.vue'),
+    component: () => import(/* webpackChunkName: "Manage" */ '@/views/ManagePage.vue'),
     meta: {
       requiresAuth: true
     }
@@ -20,7 +20,7 @@ const routes = [
   {
     name: 'song',
     path: '/song/:id',
-    component: () => import(/* webpackChunkName: "Song" */ '@/views/SongView.vue')
+    component: () => import(/* webpackChunkName: "Song" */ '@/views/SongPage.vue')
   },
   {
     path: '/:catchAll(.*)*',

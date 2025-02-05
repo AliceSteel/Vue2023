@@ -37,7 +37,6 @@ import { songsCollection, auth } from '@/includes/firebase'
 const songs = ref([])
 const unsavedFlag = ref(false)
 
-// Methods
 function addSong(document) {
   const song = {
     ...document.data(),

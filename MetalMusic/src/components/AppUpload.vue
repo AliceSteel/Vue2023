@@ -97,7 +97,7 @@ function upload($event) {
       return
     }
     const storageRef = storage.ref() // metal-music-forum.appspot.com
-    const songsRef = storageRef.child(`songs/${file.name}`) // metal-music-forum.appspot.com/songs/example.mp3
+    const songsRef = storageRef.child(`songs/${file.name}`) // metal-music-forum.appspot.com/songs/file.name
     const task = songsRef.put(file) // to initialize upload process
 
     const uploadIndex =
@@ -148,11 +148,6 @@ function upload($event) {
         uploads.value[uploadIndex].text_class = 'text-green-400'
       }
     )
-  })
-}
-function cancelUploads() {
-  uploads.value.forEach((upload) => {
-    upload.task.cancel()
   })
 }
 

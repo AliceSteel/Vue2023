@@ -1,4 +1,5 @@
 <template>
+  <!-- Spectrum visualizer -->
   <div class="relative">
     <div
       class="w-full absolute z-20 flex justify-center gap-5 transition-all duration-500 ease-out mt-10"
@@ -13,7 +14,8 @@
         type="button"
         class="h-14 w-14 text-3xl bg-white text-black rounded-full focus:outline-none"
       >
-        <i class="fas fa-play"></i>
+        <i v-show="!isLoading" class="fas fa-play"></i>
+        <div v-show="isLoading" class="loader ml-1" style="--loader-bg: black">></div>
       </button>
       <button
         v-else
@@ -35,28 +37,27 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import p5 from 'p5'
-import usePlayerStore from '@/stores/player'
+import { usePlayerStore } from '@/stores/player'
 import { storeToRefs } from 'pinia'
 
 const playerStore = usePlayerStore()
-const { current_song, sound } = storeToRefs(playerStore)
-const { loadSong, playSong } = playerStore
+const { current_song } = storeToRefs(playerStore)
 
 const canvasContainer = ref(null)
 const p5Instance = ref(null)
 let fft = null
 const soundLoaded = ref(false)
-let sound2
+let sound
 const isSoundPLaying = ref(false)
+const isLoading = ref(false)
 
-// A simple p5 sketch that doesn't do audio in preload()
 const Sketch = (p) => {
   p.setup = () => {
     const width = canvasContainer.value.clientWidth
     p.createCanvas(width, p.windowHeight * 0.7).parent(canvasContainer.value)
     p.background(0)
 
-    // Create our FFT instance now, even if no sound is loaded yet
+    // Create our FFT:
     fft = new p5.FFT()
   }
 
@@ -82,7 +83,6 @@ const Sketch = (p) => {
 }
 
 onMounted(async () => {
-  loadSong()
   window.p5 = p5
   await import('p5/lib/addons/p5.sound')
 
@@ -91,21 +91,23 @@ onMounted(async () => {
 })
 
 async function handlePlay() {
+  isLoading.value = true
   if (!p5Instance.value) {
     console.log('No p5 instance found so returning')
     return
   }
 
   if (!soundLoaded.value) {
-    sound2 = p5Instance.value.loadSound(
+    sound = p5Instance.value.loadSound(
       current_song.value.url,
       () => {
         soundLoaded.value = true
         // Connect it to FFT
-        fft.setInput(sound2)
+        fft.setInput(sound)
         // Auto-play once loaded
-        sound2.play()
+        sound.play()
         isSoundPLaying.value = true
+        isLoading.value = false
       },
       (err) => {
         console.error('Error loading sound:', err)
@@ -113,12 +115,13 @@ async function handlePlay() {
     )
   } else {
     // If sound is already loaded, just play it
-    sound2.play()
+    sound.play()
     isSoundPLaying.value = true
+    isLoading.value = false
   }
 }
 const handlePause = () => {
-  sound2.pause()
+  sound.pause()
   isSoundPLaying.value = false
 }
 onUnmounted(() => {

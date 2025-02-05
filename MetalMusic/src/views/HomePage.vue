@@ -1,5 +1,4 @@
 <template>
-  <!-- Introduction -->
   <section
     class="container w-full mx-auto h-[180vh] flex flex-wrap justify-between items-center py-36 md:h-screen md:pt-0 md:mb-36"
   >
@@ -66,8 +65,7 @@
 import { songsCollection } from '@/includes/firebase'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import HomeSongItem from '@/components/HomeSongItem.vue'
-import useUserStore from '@/stores/user'
-import AppUpload from '@/components/AppUpload.vue'
+import { useUserStore } from '@/stores/user'
 
 const songs = ref([])
 const maxPerPage = ref(5)
@@ -77,7 +75,6 @@ const allSongsFetched = ref(false)
 const userStore = useUserStore()
 const bouncingAnchor = ref({})
 
-// Methods
 function handleScroll() {
   const { scrollTop, offsetHeight } = document.documentElement
   const { innerHeight } = window
@@ -141,7 +138,6 @@ a:hover svg,
 a:hover svg circle {
   stroke: #f59e0b;
 }
-/*text border: */
 .heading::before,
 .heading::after {
   content: '';
@@ -165,7 +161,6 @@ a:hover svg circle {
 }
 
 .bounce {
-  /*name-duration-function(ease,eas-in,linear)-delay-count-direction */
   animation: jump 0.7s ease 2s infinite alternate;
 }
 
@@ -209,40 +204,6 @@ a.bounce:visited {
   70% {
     -webkit-transform: scale(1);
     transform: scale(1);
-  }
-}
-/* three dots loader: */
-.loader {
-  width: 50px;
-  aspect-ratio: 8/5;
-  --_g: no-repeat radial-gradient(#000 68%, #0000 71%);
-  -webkit-mask: var(--_g), var(--_g), var(--_g);
-  -webkit-mask-size: 25% 40%;
-  background: white;
-  animation: load 2s infinite;
-}
-
-@keyframes load {
-  0% {
-    -webkit-mask-position: 0% 0%, 50% 0%, 100% 0%;
-  }
-  16.67% {
-    -webkit-mask-position: 0% 100%, 50% 0%, 100% 0%;
-  }
-  33.33% {
-    -webkit-mask-position: 0% 100%, 50% 100%, 100% 0%;
-  }
-  50% {
-    -webkit-mask-position: 0% 100%, 50% 100%, 100% 100%;
-  }
-  66.67% {
-    -webkit-mask-position: 0% 0%, 50% 100%, 100% 100%;
-  }
-  83.33% {
-    -webkit-mask-position: 0% 0%, 50% 0%, 100% 100%;
-  }
-  100% {
-    -webkit-mask-position: 0% 0%, 50% 0%, 100% 0%;
   }
 }
 </style>

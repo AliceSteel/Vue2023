@@ -1,4 +1,5 @@
 <template>
+  <!-- Song/item for ManagePage -->
   <div class="border-b-2 border-white p-3 mb-4 rounded">
     <div v-show="!showForm" class="py-3 flex justify-between items-center">
       <h4 class="inline-block text-2xl text-white">{{ song.modified_name }}</h4>

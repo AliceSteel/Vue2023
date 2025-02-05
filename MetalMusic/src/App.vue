@@ -17,7 +17,7 @@
 <script setup>
 import AppHeader from '@/components/AppHeader.vue'
 import AppAuth from '@/components/AppAuth.vue'
-import useUserStore from '@/stores/user'
+import { useUserStore } from '@/stores/user'
 import { auth } from './includes/firebase'
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'

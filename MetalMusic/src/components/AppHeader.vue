@@ -14,7 +14,6 @@
       </router-link>
 
       <div class="flex justify-between content-center">
-        <!-- Primary Navigation -->
         <ul class="flex flex-row mt-1 text-2xl">
           <!-- Navigation Links -->
           <li>
@@ -61,8 +60,8 @@
 </template>
 
 <script setup>
-import useModalStore from '@/stores/modal'
-import useUserStore from '@/stores/user'
+import { useModalStore } from '@/stores/modal'
+import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 

@@ -9,15 +9,12 @@
       <div class="absolute inset-0 bg-gray-800 opacity-75"></div>
     </div>
 
-    <!-- This element is to trick the browser into centering the modal contents. -->
     <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
 
     <div
       class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
     >
-      <!-- Add margin if you want to see some of the overlay behind the modal-->
       <div class="py-4 text-left px-6">
-        <!--Title-->
         <div class="flex justify-between items-center pb-4">
           <p class="text-2xl font-bold">Your Account</p>
           <!-- Modal Close Button -->
@@ -63,7 +60,7 @@
 
 <script setup>
 import { storeToRefs } from 'pinia'
-import useModalStore from '@/stores/modal'
+import { useModalStore } from '@/stores/modal'
 import RegisterForm from './RegisterForm.vue'
 import LoginForm from './LoginForm.vue'
 import { ref, computed } from 'vue'
