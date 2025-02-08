@@ -1,6 +1,6 @@
 [
   {
-    "origin": ["https://tunethread.vercel.app"],
+    "origin": ["https://tunethread.vercel.app", "http://localhost:5173"],
     "method": ["GET"],
     "responseHeader": ["Content-Type"],
     "maxAgeSeconds": 3600

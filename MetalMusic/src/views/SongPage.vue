@@ -75,7 +75,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { songsCollection, auth, commentsCollection } from '@/includes/firebase'
-import SpectrumVisualizer from '../components/SpectrumVisualizer.vue'
+import SpectrumVisualizer from '../components/SpectrumVisualizer/SpectrumVisualizer.vue'
 import { useUserStore } from '@/stores/user'
 import { usePlayerStore } from '@/stores/player'
 import { storeToRefs } from 'pinia'

@@ -120,6 +120,7 @@ async function handlePlay() {
     isLoading.value = false
   }
 }
+
 const handlePause = () => {
   sound.pause()
   isSoundPLaying.value = false
